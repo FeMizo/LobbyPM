@@ -69,7 +69,7 @@ export function HeroSection({ content }: HeroSectionProps) {
           transition={{ duration: 0.7, delay: 0.32 }}
           className="self-end rounded-[2rem] border border-white/15 bg-white/12 p-6 text-white backdrop-blur-xl"
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/65">At a glance</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/65">Resumen rápido</p>
           <div className="mt-6 grid gap-5">
             {content.stats.map((stat) => (
               <div key={stat.label} className="border-b border-white/10 pb-5 last:border-b-0 last:pb-0">

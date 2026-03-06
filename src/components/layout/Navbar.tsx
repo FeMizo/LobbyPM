@@ -7,11 +7,11 @@ interface NavbarProps {
 }
 
 const navLinks = [
-  { label: 'Home', href: '#top' },
-  { label: 'Properties', href: '#properties' },
-  { label: 'Experiences', href: '#experiences' },
-  { label: 'Why us', href: '#why-us' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Inicio', href: '#top' },
+  { label: 'Propiedades', href: '#properties' },
+  { label: 'Experiencias', href: '#experiences' },
+  { label: 'Por qué elegirnos', href: '#why-us' },
+  { label: 'Contacto', href: '#contact' },
 ];
 
 export function Navbar({ site }: NavbarProps) {
@@ -38,7 +38,7 @@ export function Navbar({ site }: NavbarProps) {
           <a href="#top" className={isScrolled ? 'text-primary' : 'text-white'}>
             <span className="block text-2xl font-bold tracking-tight">{site.siteName}</span>
             <span className="block text-[10px] font-bold uppercase tracking-[0.38em] text-accent">
-              property management
+              gestión de propiedades
             </span>
           </a>
 
@@ -62,7 +62,7 @@ export function Navbar({ site }: NavbarProps) {
                   : 'border-white/40 bg-white text-primary hover:border-accent hover:bg-accent hover:text-white'
               }`}
             >
-              Dashboard
+              Admin
             </a>
           </nav>
 
@@ -70,7 +70,7 @@ export function Navbar({ site }: NavbarProps) {
             type="button"
             className={`rounded-full p-2 md:hidden ${isScrolled ? 'text-primary' : 'text-white'}`}
             onClick={() => setIsOpen((value) => !value)}
-            aria-label="Open navigation menu"
+            aria-label="Abrir navegación"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -97,7 +97,7 @@ export function Navbar({ site }: NavbarProps) {
             href="/admin"
             className="mt-4 inline-flex w-fit rounded-full bg-primary px-6 py-3 text-sm font-bold uppercase tracking-[0.2em] text-white"
           >
-            Dashboard
+            Admin
           </a>
         </div>
       </div>

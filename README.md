@@ -1,20 +1,44 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Lobby PM
 
-# Run and deploy your AI Studio app
+Base frontend para homepage y dashboard interno de una marca de rentas vacacionales en Playa del Carmen.
 
-This contains everything you need to run your app locally.
+## Cómo correr el proyecto
 
-View your app in AI Studio: https://ai.studio/apps/8d5a9239-2709-42a2-bb02-b89e5e921750
+1. Instala dependencias con `npm install`
+2. Corre el entorno local con `npm run dev`
+3. Abre `http://localhost:3131`
 
-## Run Locally
+## Rutas principales
 
-**Prerequisites:**  Node.js
+- `/` homepage público
+- `/admin` panel principal
+- `/admin/home` edición del homepage
+- `/admin/properties` base del módulo de propiedades
 
+## Fases ya implementadas
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Fase 1
+
+- Refactor de estructura
+- Homepage modular por secciones
+- SEO base del homepage
+- Mejoras visibles de performance
+
+### Fase 2
+
+- Dashboard inicial
+- `/admin/home` con formulario editable
+- Persistencia local simple y escalable
+
+### Fase 3
+
+- Tipos y datos centralizados de propiedades
+- Repositorio desacoplado para evolucionar a CRUD
+- Vista admin inicial para inventario
+
+## Qué parte del home ya es editable
+
+- Hero: titular, subtítulo, CTAs, URLs e imagen
+- Propiedades destacadas: título, subtítulo y CTA
+- Experiencias: título, subtítulo y CTA
+- CTA final: título, texto, botón y URL

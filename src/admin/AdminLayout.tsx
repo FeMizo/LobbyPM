@@ -26,14 +26,14 @@ export function AdminLayout({ children, title, description }: AdminLayoutProps) 
             <a href="/" className="text-2xl font-bold tracking-tight text-primary">
               Lobby PM
             </a>
-            <p className="mt-1 text-sm text-warm-muted">Internal content dashboard foundation</p>
+            <p className="mt-1 text-sm text-warm-muted">Base administrativa de contenido y operación</p>
           </div>
           <div className="flex gap-3">
             <a href="/admin" className="btn-outline px-5 py-2 text-xs">
-              Dashboard
+              Panel
             </a>
             <a href="/" className="btn-primary px-5 py-2 text-xs">
-              View site
+              Ver sitio
             </a>
           </div>
         </header>

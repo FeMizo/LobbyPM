@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { homepageSeed } from '../data/homepage';
 import { getHomepageContent, resetHomepageContent, saveHomepageContent } from '../lib/cms/homepageStore';
 import type { HomepageContent } from '../types/homepage';
@@ -62,10 +62,6 @@ export function AdminHomeEditorPage() {
   const [draft, setDraft] = useState<HomepageContent>(() => getHomepageContent());
   const [savedAt, setSavedAt] = useState<string | null>(null);
 
-  useEffect(() => {
-    setDraft(getHomepageContent());
-  }, []);
-
   const savedSnapshot = JSON.stringify(getHomepageContent());
   const draftSnapshot = JSON.stringify(draft);
   const hasChanges = savedSnapshot !== draftSnapshot;
@@ -83,28 +79,28 @@ export function AdminHomeEditorPage() {
 
   return (
     <AdminLayout
-      title="Edit homepage | Lobby PM Admin"
-      description="Editable homepage fields for hero, featured properties, experiences and final call to action."
+      title="Editar home | Lobby PM Admin"
+      description="Campos editables para hero, propiedades destacadas, experiencias y CTA final."
     >
       <section className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="space-y-6">
           <EditorSection
             title="Hero"
-            description="Primary SEO and conversion section above the fold. These values update the live homepage immediately after saving."
+            description="Sección principal de SEO y conversión. Estos cambios actualizan el homepage al guardar."
           >
             <SectionField
-              label="Headline"
+              label="Titular principal"
               value={draft.hero.headline}
               onChange={(value) => setDraft({ ...draft, hero: { ...draft.hero, headline: value } })}
             />
             <SectionField
-              label="Subheadline"
+              label="Subtítulo"
               multiline
               value={draft.hero.subheadline}
               onChange={(value) => setDraft({ ...draft, hero: { ...draft.hero, subheadline: value } })}
             />
             <SectionField
-              label="Primary CTA label"
+              label="Texto CTA principal"
               value={draft.hero.primaryCta.label}
               onChange={(value) =>
                 setDraft({
@@ -114,7 +110,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="Primary CTA URL"
+              label="URL CTA principal"
               value={draft.hero.primaryCta.href}
               onChange={(value) =>
                 setDraft({
@@ -124,7 +120,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="Secondary CTA label"
+              label="Texto CTA secundaria"
               value={draft.hero.secondaryCta.label}
               onChange={(value) =>
                 setDraft({
@@ -134,7 +130,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="Secondary CTA URL"
+              label="URL CTA secundaria"
               value={draft.hero.secondaryCta.href}
               onChange={(value) =>
                 setDraft({
@@ -144,7 +140,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="Hero image URL"
+              label="URL imagen hero"
               value={draft.hero.image.src}
               onChange={(value) =>
                 setDraft({
@@ -156,11 +152,11 @@ export function AdminHomeEditorPage() {
           </EditorSection>
 
           <EditorSection
-            title="Featured properties"
-            description="Section-level content for the property showcase. The inventory cards remain data-driven and ready for future CRUD."
+            title="Propiedades destacadas"
+            description="Contenido de sección para el showcase. Las tarjetas siguen viniendo desde datos centralizados y quedan listas para CRUD."
           >
             <SectionField
-              label="Title"
+              label="Título"
               value={draft.featuredProperties.heading.title}
               onChange={(value) =>
                 setDraft({
@@ -173,7 +169,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="Subtitle"
+              label="Subtítulo"
               multiline
               value={draft.featuredProperties.heading.description}
               onChange={(value) =>
@@ -187,7 +183,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="CTA label"
+              label="Texto CTA"
               value={draft.featuredProperties.cta.label}
               onChange={(value) =>
                 setDraft({
@@ -200,7 +196,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="CTA URL"
+              label="URL CTA"
               value={draft.featuredProperties.cta.href}
               onChange={(value) =>
                 setDraft({
@@ -215,11 +211,11 @@ export function AdminHomeEditorPage() {
           </EditorSection>
 
           <EditorSection
-            title="Experiences"
-            description="Headline, supporting copy and CTA for the experiences section."
+            title="Experiencias"
+            description="Título, texto de apoyo y CTA de la sección de experiencias."
           >
             <SectionField
-              label="Title"
+              label="Título"
               value={draft.experiences.heading.title}
               onChange={(value) =>
                 setDraft({
@@ -232,7 +228,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="Subtitle"
+              label="Subtítulo"
               multiline
               value={draft.experiences.heading.description}
               onChange={(value) =>
@@ -246,7 +242,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="CTA label"
+              label="Texto CTA"
               value={draft.experiences.cta.label}
               onChange={(value) =>
                 setDraft({
@@ -259,7 +255,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="CTA URL"
+              label="URL CTA"
               value={draft.experiences.cta.href}
               onChange={(value) =>
                 setDraft({
@@ -274,22 +270,22 @@ export function AdminHomeEditorPage() {
           </EditorSection>
 
           <EditorSection
-            title="Final CTA"
-            description="Bottom-of-page conversion block for direct inquiries or future booking flow handoff."
+            title="CTA final"
+            description="Bloque de conversión al final de la página para contacto directo o futura reserva."
           >
             <SectionField
-              label="Title"
+              label="Título"
               value={draft.finalCta.title}
               onChange={(value) => setDraft({ ...draft, finalCta: { ...draft.finalCta, title: value } })}
             />
             <SectionField
-              label="Text"
+              label="Texto"
               multiline
               value={draft.finalCta.text}
               onChange={(value) => setDraft({ ...draft, finalCta: { ...draft.finalCta, text: value } })}
             />
             <SectionField
-              label="Button label"
+              label="Texto del botón"
               value={draft.finalCta.button.label}
               onChange={(value) =>
                 setDraft({
@@ -299,7 +295,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="Button URL"
+              label="URL del botón"
               value={draft.finalCta.button.href}
               onChange={(value) =>
                 setDraft({
@@ -313,9 +309,9 @@ export function AdminHomeEditorPage() {
 
         <aside className="space-y-6">
           <section className="admin-card p-7">
-            <h2 className="text-2xl font-bold text-warm-text">Publishing</h2>
+            <h2 className="text-2xl font-bold text-warm-text">Publicación</h2>
             <p className="mt-3 leading-7 text-warm-muted">
-              Content is stored locally through a CMS-style repository service. That keeps the integration surface narrow for a future API or SQLite backend.
+              El contenido se guarda localmente mediante un repositorio estilo CMS. Eso deja una interfaz limpia para migrar después a API o SQLite.
             </p>
 
             <div className="mt-6 space-y-3">
@@ -324,40 +320,40 @@ export function AdminHomeEditorPage() {
                 onClick={handleSave}
                 className="inline-flex w-full justify-center rounded-2xl bg-primary px-5 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white hover:bg-[#c46648]"
               >
-                Save homepage
+                Guardar homepage
               </button>
               <button
                 type="button"
                 onClick={handleReset}
                 className="inline-flex w-full justify-center rounded-2xl border border-warm-sand bg-white px-5 py-4 text-sm font-bold uppercase tracking-[0.2em] text-warm-text hover:border-primary hover:text-primary"
               >
-                Reset defaults
+                Restaurar valores iniciales
               </button>
             </div>
 
             <div className="mt-6 rounded-[1.5rem] bg-warm-sand/50 p-4 text-sm text-warm-muted">
-              <p>Status: {hasChanges ? 'Unsaved changes' : 'Saved'}</p>
-              <p className="mt-1">Last save: {savedAt ?? 'Not saved in this session'}</p>
+              <p>Estado: {hasChanges ? 'Cambios sin guardar' : 'Guardado'}</p>
+              <p className="mt-1">Último guardado: {savedAt ?? 'Sin guardar en esta sesión'}</p>
             </div>
           </section>
 
           <section className="admin-card p-7">
-            <h2 className="text-2xl font-bold text-warm-text">Editable now</h2>
+            <h2 className="text-2xl font-bold text-warm-text">Editable ahora</h2>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-warm-muted">
-              <li>Hero headline, subheadline, both CTAs, URLs and image.</li>
-              <li>Featured properties section title, subtitle and CTA.</li>
-              <li>Experiences section title, subtitle and CTA.</li>
-              <li>Final CTA title, text, button and URL.</li>
+              <li>Hero: titular, subtítulo, CTAs, URLs e imagen.</li>
+              <li>Propiedades destacadas: título, subtítulo y CTA.</li>
+              <li>Experiencias: título, subtítulo y CTA.</li>
+              <li>CTA final: título, texto, botón y URL.</li>
             </ul>
           </section>
 
           <section className="admin-card p-7">
-            <h2 className="text-2xl font-bold text-warm-text">Next CMS modules</h2>
+            <h2 className="text-2xl font-bold text-warm-text">Siguientes módulos CMS</h2>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-warm-muted">
-              <li>Property CRUD with amenities, galleries and status.</li>
-              <li>Experience and local guide management.</li>
-              <li>Testimonials, blog and site settings.</li>
-              <li>Media manager and backend persistence adapter.</li>
+              <li>CRUD de propiedades con amenidades, galerías y estado.</li>
+              <li>Gestión de experiencias y guías locales.</li>
+              <li>Testimonials, blog y settings globales.</li>
+              <li>Media manager y adapter de persistencia backend.</li>
             </ul>
           </section>
         </aside>

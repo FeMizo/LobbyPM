@@ -6,10 +6,10 @@ interface FooterProps {
 }
 
 const footerLinks = [
-  { label: 'Featured stays', href: '#properties' },
-  { label: 'Experiences', href: '#experiences' },
-  { label: 'Why Lobby PM', href: '#why-us' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Propiedades destacadas', href: '#properties' },
+  { label: 'Experiencias', href: '#experiences' },
+  { label: 'Por qué Lobby PM', href: '#why-us' },
+  { label: 'Contacto', href: '#contact' },
 ];
 
 export function Footer({ contact, site }: FooterProps) {
@@ -19,15 +19,15 @@ export function Footer({ contact, site }: FooterProps) {
         <div>
           <p className="text-3xl font-bold tracking-tight">{site.siteName}</p>
           <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.42em] text-accent">
-            property management
+            gestión de propiedades
           </p>
           <p className="mt-6 max-w-md leading-8 text-warm-bg/70">
-            Boutique vacation rental management in Playa del Carmen with curated stays, guest care and local recommendations designed to scale into a full internal CMS.
+            Gestión boutique de rentas vacacionales en Playa del Carmen, con estancias curadas, atención cálida y una base preparada para escalar a un CMS interno completo.
           </p>
         </div>
 
         <div>
-          <h2 className="text-lg font-bold">Quick links</h2>
+          <h2 className="text-lg font-bold">Enlaces rápidos</h2>
           <ul className="mt-6 space-y-4 text-warm-bg/70">
             {footerLinks.map((link) => (
               <li key={link.href}>
@@ -38,14 +38,14 @@ export function Footer({ contact, site }: FooterProps) {
             ))}
             <li>
               <a href="/admin/home" className="hover:text-accent">
-                Edit homepage content
+                Editar contenido del home
               </a>
             </li>
           </ul>
         </div>
 
         <div>
-          <h2 className="text-lg font-bold">Contact</h2>
+          <h2 className="text-lg font-bold">Contacto</h2>
           <ul className="mt-6 space-y-4 text-warm-bg/70">
             <li>{contact.address}</li>
             <li>
@@ -73,7 +73,7 @@ export function Footer({ contact, site }: FooterProps) {
       </div>
 
       <div className="mx-auto mt-14 max-w-7xl border-t border-white/10 pt-8 text-sm text-warm-bg/50">
-        <p>{new Date().getFullYear()} Lobby PM. All rights reserved.</p>
+        <p>{new Date().getFullYear()} Lobby PM. Todos los derechos reservados.</p>
       </div>
     </footer>
   );

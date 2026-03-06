@@ -35,7 +35,7 @@ const ExperienceCard = memo(function ExperienceCard({
             <h3 className="text-2xl font-bold">{item.title}</h3>
             <p className="mt-3 text-sm leading-7 text-white/80">{item.description}</p>
             <span className="mt-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.24em] text-accent">
-              Explore <ArrowRight size={14} />
+              Explorar <ArrowRight size={14} />
             </span>
           </div>
         </div>
@@ -62,7 +62,7 @@ export function ExperiencesSection({ content }: ExperiencesSectionProps) {
 
       <Reveal className="mt-16 grid gap-8 overflow-hidden rounded-[2.5rem] bg-white p-8 shadow-[0_25px_60px_rgba(74,63,53,0.08)] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:p-12">
         <div className="max-w-xl">
-          <p className="text-xs font-bold uppercase tracking-[0.28em] text-primary">Concierge-ready content</p>
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-primary">Planeación personalizada</p>
           <h3 className="mt-5 text-4xl font-bold leading-tight text-warm-text">{content.concierge.title}</h3>
           <p className="mt-5 text-base leading-8 text-warm-muted">{content.concierge.description}</p>
           <div className="mt-8">

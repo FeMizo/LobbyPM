@@ -38,11 +38,11 @@ const PropertyCard = memo(function PropertyCard({ item, index }: { item: Propert
         <p className="mt-3 text-sm leading-7 text-warm-muted">{item.description}</p>
         <div className="mt-6 flex items-center justify-between gap-4 border-t border-warm-sand pt-5">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-warm-muted">Starting at</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-warm-muted">Desde</p>
             <p className="mt-1 text-lg font-bold text-primary">{item.price}</p>
           </div>
           <ButtonLink href={item.href} variant="outline" className="px-5 py-2 text-xs">
-            View stay
+            Ver propiedad
           </ButtonLink>
         </div>
       </div>

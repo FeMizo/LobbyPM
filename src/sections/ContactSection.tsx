@@ -35,7 +35,7 @@ export function ContactSection({ content }: ContactSectionProps) {
                 className="rounded-[1.75rem] border border-white/10 bg-white/10 p-5 hover:bg-white/16"
               >
                 <Phone size={20} />
-                <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.24em] text-white/65">Support</p>
+                <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.24em] text-white/65">Soporte</p>
                 <p className="mt-1 text-xl font-semibold">{content.phoneSecondary}</p>
               </a>
               <a
@@ -43,7 +43,7 @@ export function ContactSection({ content }: ContactSectionProps) {
                 className="rounded-[1.75rem] border border-white/10 bg-white/10 p-5 hover:bg-white/16 md:col-span-2"
               >
                 <Mail size={20} />
-                <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.24em] text-white/65">Email</p>
+                <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.24em] text-white/65">Correo</p>
                 <p className="mt-1 text-xl font-semibold">{content.email}</p>
                 <p className="mt-2 text-sm text-white/70">{content.address}</p>
               </a>
@@ -51,17 +51,17 @@ export function ContactSection({ content }: ContactSectionProps) {
           </Reveal>
 
           <div className="border-l border-white/10 bg-white/8 px-8 py-10 md:px-10 md:py-14">
-            <h3 className="text-2xl font-bold text-white">Request a recommendation</h3>
+            <h3 className="text-2xl font-bold text-white">Solicita una recomendación</h3>
             <p className="mt-4 leading-7 text-white/75">
-              This form is intentionally non-persistent for now. It keeps the commercial intent visible while the future dashboard grows into full inquiries and CRM flows.
+              Este formulario sigue siendo simple por ahora. Mantiene visible la intención comercial mientras el dashboard evoluciona a inquiries y flujos más completos.
             </p>
 
             <form className="mt-8 space-y-4">
-              <input type="text" placeholder="Full name" className="input-base border-white/15 bg-white/10 text-white placeholder:text-white/45 focus:border-accent" />
-              <input type="email" placeholder="Email address" className="input-base border-white/15 bg-white/10 text-white placeholder:text-white/45 focus:border-accent" />
+              <input type="text" placeholder="Nombre completo" className="input-base border-white/15 bg-white/10 text-white placeholder:text-white/45 focus:border-accent" />
+              <input type="email" placeholder="Correo electrónico" className="input-base border-white/15 bg-white/10 text-white placeholder:text-white/45 focus:border-accent" />
               <textarea
                 rows={5}
-                placeholder="Tell us about dates, guests or the type of stay you need"
+                placeholder="Cuéntanos fechas, huéspedes o el tipo de estancia que buscas"
                 className="input-base resize-none border-white/15 bg-white/10 text-white placeholder:text-white/45 focus:border-accent"
               />
               <button
@@ -69,7 +69,7 @@ export function ContactSection({ content }: ContactSectionProps) {
                 className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-accent px-5 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white hover:bg-[#e0883d]"
               >
                 <MessageSquare size={18} />
-                Send inquiry
+                Enviar solicitud
               </button>
             </form>
           </div>

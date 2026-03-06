@@ -1,24 +1,24 @@
-import { PencilLine, Settings, Sparkles } from 'lucide-react';
+import { Building2, PencilLine, Sparkles } from 'lucide-react';
 import { AdminLayout } from './AdminLayout';
 
 const roadmap = [
   {
-    title: 'Homepage editor',
-    description: 'Edit hero, section copy, CTAs and URLs from a persistent content layer.',
+    title: 'Editor del homepage',
+    description: 'Editar hero, copies, CTAs y URLs desde una capa de contenido persistente.',
     href: '/admin/home',
     icon: PencilLine,
     available: true,
   },
   {
-    title: 'Properties CMS',
-    description: 'Future CRUD for inventory, amenities, pricing, media and availability metadata.',
-    href: '#',
-    icon: Settings,
-    available: false,
+    title: 'Base de propiedades',
+    description: 'Inventario inicial desacoplado, preparado para crecer a CRUD con amenidades, media y estado.',
+    href: '/admin/properties',
+    icon: Building2,
+    available: true,
   },
   {
-    title: 'Experiences & guides',
-    description: 'Future management for tours, local places, blog-like content and offers.',
+    title: 'Experiencias y guías',
+    description: 'Siguiente fase para tours, lugares cercanos, contenido editorial y ofertas.',
     href: '#',
     icon: Sparkles,
     available: false,
@@ -28,25 +28,25 @@ const roadmap = [
 export function AdminDashboardPage() {
   return (
     <AdminLayout
-      title="Lobby PM Admin Dashboard"
-      description="Internal dashboard foundation for managing homepage content and future CMS modules."
+      title="Dashboard Admin | Lobby PM"
+      description="Base administrativa para gestionar el homepage y preparar los siguientes módulos CMS."
     >
       <section className="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.6fr)]">
         <div className="admin-card p-8">
-          <p className="text-xs font-bold uppercase tracking-[0.28em] text-primary">Current scope</p>
-          <h1 className="mt-4 text-4xl font-bold text-warm-text">CMS foundation for the Lobby PM homepage</h1>
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-primary">Fases activas</p>
+          <h1 className="mt-4 text-4xl font-bold text-warm-text">Base CMS para el sitio de Lobby PM</h1>
           <p className="mt-5 max-w-2xl leading-8 text-warm-muted">
-            This admin area is intentionally narrow in v1. The goal is to validate an editable content model, local persistence and a clean separation between presentation and data before adding full CRUD modules.
+            La Fase 1 ya deja estructura, modularidad, SEO y mejoras visibles de performance. La Fase 2 deja el homepage editable. La Fase 3 prepara el módulo de propiedades para evolucionar a CRUD real sin rehacer la arquitectura.
           </p>
         </div>
 
         <div className="admin-card p-8">
-          <h2 className="text-2xl font-bold text-warm-text">What is already covered</h2>
+          <h2 className="text-2xl font-bold text-warm-text">Lo que ya queda cubierto</h2>
           <ul className="mt-5 space-y-3 text-warm-muted">
-            <li>Homepage content is typed and centralized.</li>
-            <li>Changes persist locally via a CMS-style storage service.</li>
-            <li>The home reads from that content layer instead of hardcoded JSX.</li>
-            <li>SEO metadata and schema are generated from structured content.</li>
+            <li>Contenido del homepage tipado y centralizado.</li>
+            <li>Persistencia local simple con patrón escalable.</li>
+            <li>Home modular por secciones y desacoplado del JSX hardcodeado.</li>
+            <li>SEO metadata y schema generados desde contenido estructurado.</li>
           </ul>
         </div>
       </section>
@@ -63,11 +63,11 @@ export function AdminDashboardPage() {
               <p className="mt-3 min-h-20 leading-7 text-warm-muted">{item.description}</p>
               {item.available ? (
                 <a href={item.href} className="mt-6 inline-flex btn-primary px-5 py-2 text-xs">
-                  Open module
+                  Abrir módulo
                 </a>
               ) : (
                 <span className="mt-6 inline-flex rounded-full bg-warm-sand px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-warm-muted">
-                  Next phase
+                  Siguiente fase
                 </span>
               )}
             </article>

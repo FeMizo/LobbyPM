@@ -4,6 +4,10 @@ import type { HomepageContent } from '../../types/homepage';
 
 const STORAGE_KEY = 'lobbypm.homepage-content.v1';
 const STORE_EVENT = 'lobbypm:homepage-content-updated';
+const defaultSnapshot = structuredClone(homepageSeed);
+
+let cachedRaw = '';
+let cachedSnapshot: HomepageContent = defaultSnapshot;
 
 function cloneSeed() {
   return structuredClone(homepageSeed);
@@ -15,23 +19,33 @@ function canUseStorage() {
 
 export function getHomepageContent(): HomepageContent {
   if (!canUseStorage()) {
-    return cloneSeed();
+    return defaultSnapshot;
   }
 
   const stored = window.localStorage.getItem(STORAGE_KEY);
+  const raw = stored ?? '';
+
+  if (raw === cachedRaw) {
+    return cachedSnapshot;
+  }
+
+  cachedRaw = raw;
 
   if (!stored) {
-    return cloneSeed();
+    cachedSnapshot = cloneSeed();
+    return cachedSnapshot;
   }
 
   try {
-    return {
+    cachedSnapshot = {
       ...cloneSeed(),
       ...JSON.parse(stored),
     } as HomepageContent;
   } catch {
-    return cloneSeed();
+    cachedSnapshot = cloneSeed();
   }
+
+  return cachedSnapshot;
 }
 
 export function saveHomepageContent(content: HomepageContent) {
@@ -39,7 +53,10 @@ export function saveHomepageContent(content: HomepageContent) {
     return;
   }
 
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
+  const raw = JSON.stringify(content);
+  cachedRaw = raw;
+  cachedSnapshot = content;
+  window.localStorage.setItem(STORAGE_KEY, raw);
   window.dispatchEvent(new Event(STORE_EVENT));
 }
 
@@ -48,6 +65,8 @@ export function resetHomepageContent() {
     return;
   }
 
+  cachedRaw = '';
+  cachedSnapshot = cloneSeed();
   window.localStorage.removeItem(STORAGE_KEY);
   window.dispatchEvent(new Event(STORE_EVENT));
 }
@@ -73,5 +92,5 @@ function subscribe(callback: () => void) {
 }
 
 export function useHomepageContent() {
-  return useSyncExternalStore(subscribe, getHomepageContent, cloneSeed);
+  return useSyncExternalStore(subscribe, getHomepageContent, () => defaultSnapshot);
 }
