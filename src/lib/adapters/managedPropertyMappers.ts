@@ -1,5 +1,6 @@
 import type { PropertySummary } from '../../types/homepage';
 import type { ManagedProperty } from '../../types/properties';
+import { generatePropertyUrl } from '../routing/propertyUrl';
 
 function formatNightlyRate(currency: ManagedProperty['currency'], amount: number) {
   const formatter = new Intl.NumberFormat('es-MX', {
@@ -20,7 +21,7 @@ export function mapManagedPropertyToSummary(property: ManagedProperty): Property
     image: property.coverImage,
     price: `${formatNightlyRate(property.currency, property.nightlyRateFrom)} por noche`,
     rating: property.rating,
-    href: property.externalLink?.href ?? '#contact',
+    href: generatePropertyUrl(property),
     bedrooms: property.bedrooms,
     bathrooms: property.bathrooms,
     guests: property.guests,

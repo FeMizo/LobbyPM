@@ -1,6 +1,7 @@
 import { AdminDashboardPage } from './admin/AdminDashboardPage';
 import { AdminHomeEditorPage } from './admin/AdminHomeEditorPage';
 import { AdminPropertiesPage } from './admin/AdminPropertiesPage';
+import { parsePropertyPath } from './lib/routing/propertyUrl';
 import { HomePage } from './pages/HomePage';
 
 function getNormalizedPathname() {
@@ -21,6 +22,12 @@ export default function App() {
 
   if (pathname === '/admin/properties') {
     return <AdminPropertiesPage />;
+  }
+
+  if (parsePropertyPath(pathname)) {
+    // Future route shape prepared for /[estado]/[lugar]/[propiedad].
+    // A dedicated property detail page can be attached here later.
+    return <HomePage />;
   }
 
   return <HomePage />;

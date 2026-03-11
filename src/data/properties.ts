@@ -4,6 +4,11 @@ export const propertiesSeed: ManagedProperty[] = [
   {
     id: 'casa-allegra',
     slug: 'casa-allegra-merida-centro',
+    route: {
+      state: 'merida',
+      location: 'centro',
+      slug: 'casa-allegra',
+    },
     name: 'Casa Allegra',
     location: 'Centro, Merida, Yucatan',
     shortDescription:
@@ -41,6 +46,11 @@ export const propertiesSeed: ManagedProperty[] = [
   {
     id: 'casa-cocol',
     slug: 'casa-cocol-merida-centro',
+    route: {
+      state: 'merida',
+      location: 'centro',
+      slug: 'casa-cocol',
+    },
     name: 'Casa Cocol',
     location: 'Centro, Merida, Yucatan',
     shortDescription:

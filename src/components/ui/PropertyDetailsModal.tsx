@@ -77,7 +77,7 @@ export function PropertyDetailsModal({ property, onClose }: PropertyDetailsModal
           </button>
         </div>
 
-        <div className="grid max-h-[82vh] overflow-y-auto lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+        <div className="grid max-h-[82vh] overflow-y-auto lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <PropertyImage
             image={property.image}
             size="modal"

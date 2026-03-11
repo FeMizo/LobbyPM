@@ -1,22 +1,20 @@
 import { useSyncExternalStore } from 'react';
 import { propertiesSeed } from '../../data/properties';
 import type { CreateManagedPropertyInput, ManagedProperty, PropertyAmenity } from '../../types/properties';
+import { buildLegacyPropertySlug, resolvePropertyRoute } from '../routing/propertyUrl';
 
-// Current persistence strategy:
-// 1) Seed data lives in src/data/properties.ts
-// 2) Runtime edits are stored in browser localStorage under STORAGE_KEY
-// This repository is the single access point so swapping to API/DB later is isolated here.
-const STORAGE_KEY = 'lobbypm.properties.v1';
-const STORE_EVENT = 'lobbypm:properties-updated';
+const API_ENDPOINT = '/api/properties';
 const defaultSnapshot = structuredClone(propertiesSeed);
 
-let cachedRaw = '';
 let cachedSnapshot: ManagedProperty[] = defaultSnapshot;
+const listeners = new Set<() => void>();
+let initialSyncStarted = false;
 
 export interface PropertiesRepository {
   list(): ManagedProperty[];
   listPublished(): ManagedProperty[];
   getById(id: string): ManagedProperty | undefined;
+  refresh(): Promise<ManagedProperty[]>;
   create(input: CreateManagedPropertyInput): ManagedProperty;
   update(id: string, input: CreateManagedPropertyInput): ManagedProperty | undefined;
   subscribe(listener: () => void): () => void;
@@ -24,9 +22,15 @@ export interface PropertiesRepository {
 
 export const propertiesDataSource = {
   seedFile: 'src/data/properties.ts',
-  storageType: 'localStorage',
-  storageKey: STORAGE_KEY,
+  persistenceFile: 'storage/properties.json',
+  apiEndpoint: API_ENDPOINT,
+  mode: 'project-file-via-api',
+  routeTemplate: '/[estado]/[lugar]/[propiedad]',
 } as const;
+
+function emitUpdate() {
+  listeners.forEach((listener) => listener());
+}
 
 function cloneSeed() {
   return structuredClone(propertiesSeed);
@@ -43,12 +47,7 @@ function normalizeAmenities(rawAmenities: unknown): PropertyAmenity[] {
         return { id: toAmenityId(item), label: item };
       }
 
-      if (
-        typeof item === 'object' &&
-        item !== null &&
-        'label' in item &&
-        typeof item.label === 'string'
-      ) {
+      if (typeof item === 'object' && item !== null && 'label' in item && typeof item.label === 'string') {
         const id =
           'id' in item && typeof item.id === 'string'
             ? item.id
@@ -68,12 +67,19 @@ function normalizeSnapshot(rawSnapshot: unknown) {
   }
 
   return rawSnapshot
-    .map((item) => {
+    .map<ManagedProperty | null>((item) => {
       if (typeof item !== 'object' || item === null) {
         return null;
       }
 
       const raw = item as Partial<ManagedProperty>;
+      const route = resolvePropertyRoute({
+        name: typeof raw.name === 'string' ? raw.name : 'property',
+        location: typeof raw.location === 'string' ? raw.location : '',
+        slug: typeof raw.slug === 'string' ? raw.slug : '',
+        route: raw.route,
+      });
+      const legacySlug = typeof raw.slug === 'string' && raw.slug.trim() ? raw.slug : buildLegacyPropertySlug(route);
       const coverImage = raw.coverImage?.src
         ? raw.coverImage
         : {
@@ -88,7 +94,8 @@ function normalizeSnapshot(rawSnapshot: unknown) {
 
       return {
         id: typeof raw.id === 'string' ? raw.id : buildPropertyId(raw.name ?? 'property', new Set()),
-        slug: typeof raw.slug === 'string' ? raw.slug : slugify(`${raw.name ?? 'property'}-${raw.location ?? ''}`),
+        slug: legacySlug,
+        route,
         name: typeof raw.name === 'string' ? raw.name : 'Propiedad sin nombre',
         location: typeof raw.location === 'string' ? raw.location : 'Merida, Yucatan',
         shortDescription:
@@ -117,55 +124,29 @@ function normalizeSnapshot(rawSnapshot: unknown) {
                 label: raw.externalLink.label?.trim() || 'Ver disponibilidad',
               }
             : undefined,
-      } satisfies ManagedProperty;
+      };
     })
     .filter((item): item is ManagedProperty => item !== null);
 }
 
-function canUseStorage() {
-  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
-}
-
-function readSnapshot() {
-  if (!canUseStorage()) {
-    return defaultSnapshot;
-  }
-
-  const stored = window.localStorage.getItem(STORAGE_KEY);
-  const raw = stored ?? '';
-
-  if (raw === cachedRaw) {
-    return cachedSnapshot;
-  }
-
-  cachedRaw = raw;
-
-  if (!stored) {
-    cachedSnapshot = cloneSeed();
-    return cachedSnapshot;
-  }
-
-  try {
-    const parsed = JSON.parse(stored);
-    cachedSnapshot = normalizeSnapshot(parsed);
-  } catch {
-    cachedSnapshot = cloneSeed();
-  }
-
-  return cachedSnapshot;
-}
-
-function persistSnapshot(snapshot: ManagedProperty[]) {
-  if (!canUseStorage()) {
-    cachedSnapshot = snapshot;
-    return;
-  }
-
-  const raw = JSON.stringify(snapshot);
-  cachedRaw = raw;
+function commitSnapshot(snapshot: ManagedProperty[]) {
   cachedSnapshot = snapshot;
-  window.localStorage.setItem(STORAGE_KEY, raw);
-  window.dispatchEvent(new Event(STORE_EVENT));
+  emitUpdate();
+}
+
+async function persistSnapshotToFile(snapshot: ManagedProperty[]) {
+  const response = await fetch(API_ENDPOINT, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(snapshot),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Unable to persist properties: ${response.status}`);
+  }
+
+  const payload = await response.json();
+  return normalizeSnapshot(payload);
 }
 
 function slugify(value: string) {
@@ -218,7 +199,7 @@ function buildAmenities(labels: string[]) {
 
 class BrowserPropertiesRepository implements PropertiesRepository {
   list() {
-    return readSnapshot();
+    return cachedSnapshot;
   }
 
   listPublished() {
@@ -229,15 +210,38 @@ class BrowserPropertiesRepository implements PropertiesRepository {
     return this.list().find((item) => item.id === id);
   }
 
+  async refresh() {
+    try {
+      const response = await fetch(API_ENDPOINT, { method: 'GET' });
+      if (!response.ok) {
+        throw new Error(`Unable to fetch properties: ${response.status}`);
+      }
+      const payload = await response.json();
+      const nextSnapshot = normalizeSnapshot(payload);
+      commitSnapshot(nextSnapshot);
+      return nextSnapshot;
+    } catch (error) {
+      console.warn('Properties API unavailable, using in-memory snapshot.', error);
+      return this.list();
+    }
+  }
+
   create(input: CreateManagedPropertyInput) {
     const snapshot = this.list();
     const existingIds = new Set(snapshot.map((item) => item.id));
     const id = buildPropertyId(input.name, existingIds);
-    const slugBase = `${input.name}-${input.location}`;
+    const route = resolvePropertyRoute({
+      name: input.name,
+      location: input.location,
+      route: input.route,
+      slug: input.legacySlug ?? '',
+    });
+    const legacySlug = input.legacySlug?.trim() || buildLegacyPropertySlug(route);
 
     const nextItem: ManagedProperty = {
       id,
-      slug: slugify(slugBase) || id,
+      slug: legacySlug,
+      route,
       name: input.name,
       location: input.location,
       shortDescription: input.shortDescription,
@@ -252,14 +256,16 @@ class BrowserPropertiesRepository implements PropertiesRepository {
       coverImage: input.coverImage,
       gallery: input.gallery?.length ? input.gallery : [input.coverImage],
       amenities: buildAmenities(input.amenities),
-      externalAmenities: input.externalAmenities
-        .map((item) => item.trim())
-        .filter(Boolean),
+      externalAmenities: input.externalAmenities.map((item) => item.trim()).filter(Boolean),
       externalLink: input.externalLink,
     };
 
     const nextSnapshot = [...snapshot, nextItem];
-    persistSnapshot(nextSnapshot);
+    commitSnapshot(nextSnapshot);
+
+    void persistSnapshotToFile(nextSnapshot)
+      .then((persistedSnapshot) => commitSnapshot(persistedSnapshot))
+      .catch((error) => console.warn('Unable to persist created property to file.', error));
 
     return nextItem;
   }
@@ -273,9 +279,17 @@ class BrowserPropertiesRepository implements PropertiesRepository {
     }
 
     const currentItem = snapshot[propertyIndex];
+    const route = resolvePropertyRoute({
+      name: input.name,
+      location: input.location,
+      route: input.route,
+      slug: input.legacySlug || currentItem.slug,
+    });
+    const legacySlug = input.legacySlug?.trim() || buildLegacyPropertySlug(route);
     const nextItem: ManagedProperty = {
       ...currentItem,
-      slug: slugify(`${input.name}-${input.location}`) || currentItem.slug,
+      slug: legacySlug,
+      route,
       name: input.name,
       location: input.location,
       shortDescription: input.shortDescription,
@@ -296,28 +310,23 @@ class BrowserPropertiesRepository implements PropertiesRepository {
 
     const nextSnapshot = [...snapshot];
     nextSnapshot[propertyIndex] = nextItem;
-    persistSnapshot(nextSnapshot);
+    commitSnapshot(nextSnapshot);
+
+    void persistSnapshotToFile(nextSnapshot)
+      .then((persistedSnapshot) => commitSnapshot(persistedSnapshot))
+      .catch((error) => console.warn('Unable to persist edited property to file.', error));
 
     return nextItem;
   }
 
   subscribe(listener: () => void) {
-    if (typeof window === 'undefined') {
-      return () => undefined;
+    listeners.add(listener);
+    if (!initialSyncStarted && typeof window !== 'undefined') {
+      initialSyncStarted = true;
+      void this.refresh();
     }
-
-    const onStorage = (event: StorageEvent) => {
-      if (event.key === STORAGE_KEY) {
-        listener();
-      }
-    };
-
-    window.addEventListener(STORE_EVENT, listener);
-    window.addEventListener('storage', onStorage);
-
     return () => {
-      window.removeEventListener(STORE_EVENT, listener);
-      window.removeEventListener('storage', onStorage);
+      listeners.delete(listener);
     };
   }
 }

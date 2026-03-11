@@ -13,9 +13,17 @@ export interface PropertyExternalLink {
   href: string;
 }
 
+export interface PropertyRouteSegments {
+  state: string;
+  location: string;
+  slug: string;
+}
+
 export interface ManagedProperty {
   id: string;
+  // Legacy slug kept for backward compatibility with existing links.
   slug: string;
+  route: PropertyRouteSegments;
   name: string;
   location: string;
   shortDescription: string;
@@ -37,6 +45,8 @@ export interface ManagedProperty {
 export interface CreateManagedPropertyInput {
   name: string;
   location: string;
+  route?: PropertyRouteSegments;
+  legacySlug?: string;
   shortDescription: string;
   nightlyRateFrom: number;
   currency: PropertyCurrency;

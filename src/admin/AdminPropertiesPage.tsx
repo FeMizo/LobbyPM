@@ -100,9 +100,9 @@ export function AdminPropertiesPage() {
           <div className="rounded-2xl border border-warm-sand bg-white/70 p-4 text-xs leading-6 text-warm-muted">
             <p className="font-bold uppercase tracking-[0.14em] text-warm-text">Fuente de datos actual</p>
             <p>Seed: {propertiesDataSource.seedFile}</p>
-            <p>
-              Persistencia temporal: {propertiesDataSource.storageType} ({propertiesDataSource.storageKey})
-            </p>
+            <p>Archivo persistente: {propertiesDataSource.persistenceFile}</p>
+            <p>Endpoint: {propertiesDataSource.apiEndpoint}</p>
+            <p>Ruta SEO futura: {propertiesDataSource.routeTemplate}</p>
           </div>
 
           <button
@@ -147,7 +147,9 @@ export function AdminPropertiesPage() {
           </div>
         ) : (
           properties.map((property) => (
-            <PropertyAdminCard key={property.id} property={property} onEdit={openEditEditor} />
+            <div key={property.id}>
+              <PropertyAdminCard property={property} onEdit={openEditEditor} />
+            </div>
           ))
         )}
       </section>

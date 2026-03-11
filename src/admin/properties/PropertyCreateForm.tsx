@@ -63,6 +63,11 @@ export function PropertyCreateForm({
       return;
     }
 
+    if (!values.routeState.trim() || !values.routeLocation.trim() || !values.routeSlug.trim()) {
+      setError('Completa estado, lugar y slug SEO para generar la ruta jerarquica.');
+      return;
+    }
+
     setError(null);
     onSubmit(toCreateManagedPropertyInput(values));
   }
@@ -101,6 +106,30 @@ export function PropertyCreateForm({
           </Field>
           <Field label="Ubicacion">
             <TextInputField tone="admin" value={values.location} onChange={(event) => setField('location', event.target.value)} />
+          </Field>
+        </div>
+
+        <div className="grid gap-5 lg:grid-cols-3">
+          <Field label="Estado URL (ej: merida)">
+            <TextInputField
+              tone="admin"
+              value={values.routeState}
+              onChange={(event) => setField('routeState', event.target.value)}
+            />
+          </Field>
+          <Field label="Lugar URL (ej: centro)">
+            <TextInputField
+              tone="admin"
+              value={values.routeLocation}
+              onChange={(event) => setField('routeLocation', event.target.value)}
+            />
+          </Field>
+          <Field label="Slug URL (ej: casa-cocol)">
+            <TextInputField
+              tone="admin"
+              value={values.routeSlug}
+              onChange={(event) => setField('routeSlug', event.target.value)}
+            />
           </Field>
         </div>
 

@@ -1,6 +1,7 @@
 import { PencilLine } from 'lucide-react';
 import { PropertyImage } from '../../components/ui/PropertyImage';
 import type { ManagedProperty } from '../../types/properties';
+import { generatePropertyUrl } from '../../lib/routing/propertyUrl';
 
 interface PropertyAdminCardProps {
   property: ManagedProperty;
@@ -16,6 +17,8 @@ function getCurrencyLabel(currency: ManagedProperty['currency'], amount: number)
 }
 
 export function PropertyAdminCard({ property, onEdit }: PropertyAdminCardProps) {
+  const seoUrl = generatePropertyUrl(property);
+
   const stats = [
     { label: 'Tarifa', value: getCurrencyLabel(property.currency, property.nightlyRateFrom) },
     { label: 'Recamaras', value: String(property.bedrooms) },
@@ -60,6 +63,10 @@ export function PropertyAdminCard({ property, onEdit }: PropertyAdminCardProps) 
           </div>
 
           <p className="text-sm uppercase tracking-[0.18em] text-warm-muted">{property.location}</p>
+          <div className="rounded-xl bg-warm-sand/45 px-3 py-2 text-xs text-warm-muted">
+            <p>Ruta SEO: {seoUrl}</p>
+            <p>Slug legado: /{property.slug}</p>
+          </div>
           <p className="leading-7 text-warm-muted">{property.shortDescription}</p>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">

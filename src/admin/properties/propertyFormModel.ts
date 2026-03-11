@@ -4,10 +4,14 @@ import type {
   PropertyCurrency,
   PropertyStatus,
 } from '../../types/properties';
+import { buildLegacyPropertySlug, resolvePropertyRoute } from '../../lib/routing/propertyUrl';
 
 export interface PropertyFormValues {
   name: string;
   location: string;
+  routeState: string;
+  routeLocation: string;
+  routeSlug: string;
   shortDescription: string;
   nightlyRateFrom: string;
   currency: PropertyCurrency;
@@ -29,6 +33,9 @@ export interface PropertyFormValues {
 const defaultPropertyFormValues: PropertyFormValues = {
   name: '',
   location: 'Centro, Merida, Yucatan',
+  routeState: 'merida',
+  routeLocation: 'centro',
+  routeSlug: 'nueva-propiedad',
   shortDescription: '',
   nightlyRateFrom: '3500',
   currency: 'MXN',
@@ -78,9 +85,14 @@ export function getInitialPropertyFormValues(): PropertyFormValues {
 }
 
 export function toPropertyFormValues(property: ManagedProperty): PropertyFormValues {
+  const route = resolvePropertyRoute(property);
+
   return {
     name: property.name,
     location: property.location,
+    routeState: route.state,
+    routeLocation: route.location,
+    routeSlug: route.slug,
     shortDescription: property.shortDescription,
     nightlyRateFrom: String(property.nightlyRateFrom),
     currency: property.currency,
@@ -112,6 +124,16 @@ export function toCreateManagedPropertyInput(values: PropertyFormValues): Create
   return {
     name,
     location,
+    route: {
+      state: values.routeState.trim(),
+      location: values.routeLocation.trim(),
+      slug: values.routeSlug.trim(),
+    },
+    legacySlug: buildLegacyPropertySlug({
+      state: values.routeState.trim(),
+      location: values.routeLocation.trim(),
+      slug: values.routeSlug.trim(),
+    }),
     shortDescription,
     nightlyRateFrom: parseNumber(values.nightlyRateFrom, 0),
     currency: values.currency,
