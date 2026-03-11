@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lobby PM — Plan de Trabajo</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0f;
+      --card: #16161f;
+      --border: #252535;
+      --accent: #d4a853;
+      --accent2: #7b6ef6;
+      --accent3: #4ecdc4;
+      --text: #e8e8f0;
+      --muted: #888899;
+      --success: #3dd68c;
+      --wa: #25d366;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.4;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* HEADER */
+    header {
+      padding: 3rem 0 2rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: 'LOBBY PM';
+      position: absolute;
+      right: -2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Syne', sans-serif;
+      font-size: 9rem;
+      font-weight: 800;
+      color: rgba(212, 168, 83, 0.04);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .header-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(212, 168, 83, 0.1);
+      border: 1px solid rgba(212, 168, 83, 0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .header-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 300;
+      max-width: 520px;
+      line-height: 1.6;
+      margin-top: 0.5rem;
+    }
+
+    .header-meta {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .meta-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+
+    .meta-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .meta-value.gold {
+      color: var(--accent);
+    }
+
+    .meta-value.green {
+      color: var(--success);
+    }
+
+    /* DECISION BANNER */
+    .decision-banner {
+      margin-top: 2rem;
+      background: rgba(37, 211, 102, 0.07);
+      border: 1px solid rgba(37, 211, 102, 0.2);
+      border-radius: 0.75rem;
+      padding: 0.9rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .decision-icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+
+    .decision-text {
+      font-size: 0.8rem;
+      color: var(--success);
+      line-height: 1.6;
+    }
+
+    .decision-text strong {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    /* PROGRESS BAR */
+    .progress-section {
+      padding: 2rem 0 1rem;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .progress-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .progress-pct {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--accent);
+      transition: all 0.4s;
+    }
+
+    .progress-bar-wrap {
+      height: 6px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transition: width 0.5s cubic-bezier(.4, 0, .2, 1);
+      width: 0%;
+    }
+
+    .progress-counts {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .progress-counts span {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* SECTION */
+    .section {
+      padding: 2.5rem 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* STACK */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .stack-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .stack-emoji {
+      font-size: 1.3rem;
+    }
+
+    .stack-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .stack-role {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* PHASES */
+    .phases {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .phases::before {
+      content: '';
+      position: absolute;
+      left: 1.75rem;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--border) 5%, var(--border) 95%, transparent);
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 3.5rem 1fr;
+      gap: 1.5rem;
+      padding-bottom: 1.75rem;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp 0.45s ease forwards;
+    }
+
+    .phase:nth-child(1) {
+      animation-delay: .05s
+    }
+
+    .phase:nth-child(2) {
+      animation-delay: .1s
+    }
+
+    .phase:nth-child(3) {
+      animation-delay: .15s
+    }
+
+    .phase:nth-child(4) {
+      animation-delay: .2s
+    }
+
+    .phase:nth-child(5) {
+      animation-delay: .25s
+    }
+
+    .phase:nth-child(6) {
+      animation-delay: .3s
+    }
+
+    .phase:nth-child(7) {
+      animation-delay: .35s
+    }
+
+    .phase:nth-child(8) {
+      animation-delay: .4s
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .phase-dot {
+      display: flex;
+      align-items: flex-start;
+      padding-top: 0.35rem;
+      z-index: 1;
+    }
+
+    .dot {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      border: 2px solid;
+      background: var(--bg);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .phase-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.25s, transform 0.2s, background 0.3s;
+    }
+
+    .phase-card:hover {
+      border-color: rgba(212, 168, 83, 0.25);
+      transform: translateX(3px);
+    }
+
+    .phase.completed .phase-card {
+      background: rgba(61, 214, 140, 0.04);
+      border-color: rgba(61, 214, 140, 0.2);
+    }
+
+    .phase.completed .dot {
+      background: var(--success);
+      border-color: var(--success);
+      color: #0a0a0f;
+    }
+
+    .phase.completed .phase-name {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .phase-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.6rem;
+    }
+
+    .phase-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* SIMPLIFIED BADGE */
+    .badge-simplified {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2rem;
+      background: rgba(37, 211, 102, 0.1);
+      color: var(--wa);
+      border: 1px solid rgba(37, 211, 102, 0.25);
+      white-space: nowrap;
+    }
+
+    /* PHASE CHECKBOX */
+    .phase-check {
+      width: 1.3rem;
+      height: 1.3rem;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+      position: relative;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .phase-check:hover {
+      border-color: var(--success);
+    }
+
+    .phase-check:checked {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    .phase-check:checked::after {
+      content: '✓';
+      position: absolute;
+      color: #0a0a0f;
+      font-size: 0.65rem;
+      font-weight: 800;
+    }
+
+    .phase-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.3;
+      transition: color 0.25s;
+    }
+
+    .phase-badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2rem;
+      white-space: nowrap;
+    }
+
+    .badge-time {
+      background: rgba(123, 110, 246, 0.12);
+      color: var(--accent2);
+      border: 1px solid rgba(123, 110, 246, 0.2);
+    }
+
+    .badge-cost {
+      background: rgba(212, 168, 83, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(212, 168, 83, 0.2);
+      font-weight: 600;
+    }
+
+    .badge-week {
+      background: rgba(78, 205, 196, 0.1);
+      color: var(--accent3);
+      border: 1px solid rgba(78, 205, 196, 0.2);
+    }
+
+    .badge-future {
+      background: rgba(136, 136, 153, 0.1);
+      color: var(--muted);
+      border: 1px solid rgba(136, 136, 153, 0.2);
+    }
+
+    .phase-desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    /* NOTE inline */
+    .phase-note {
+      font-size: 0.72rem;
+      color: var(--wa);
+      background: rgba(37, 211, 102, 0.07);
+      border: 1px solid rgba(37, 211, 102, 0.15);
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.7rem;
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .phase-note-future {
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: rgba(136, 136, 153, 0.06);
+      border: 1px solid rgba(136, 136, 153, 0.15);
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.7rem;
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* TASK CHECKLIST */
+    .tasks {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      padding: 0.3rem 0;
+    }
+
+    .task-item input[type="checkbox"] {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 3px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .task-item input[type="checkbox"]:hover {
+      border-color: var(--accent);
+    }
+
+    .task-item input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .task-item input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      color: #0a0a0f;
+      font-size: 0.55rem;
+      font-weight: 900;
+    }
+
+    .task-label {
+      font-size: 0.78rem;
+      color: var(--text);
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .task-label::before {
+      content: '→';
+      color: var(--accent);
+      font-size: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    .task-item.done .task-label {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .task-item.done .task-label::before {
+      color: var(--success);
+      content: '✓';
+    }
+
+    /* MINI PROGRESS */
+    .phase-mini-progress {
+      margin-top: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .mini-bar-wrap {
+      flex: 1;
+      height: 3px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .mini-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .mini-pct {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      min-width: 2.5rem;
+      text-align: right;
+    }
+
+    /* DOT COLORS */
+    .c1 .dot {
+      color: var(--accent);
+      border-color: rgba(212, 168, 83, 0.4);
+    }
+
+    .c2 .dot {
+      color: var(--accent2);
+      border-color: rgba(123, 110, 246, 0.4);
+    }
+
+    .c3 .dot {
+      color: var(--accent3);
+      border-color: rgba(78, 205, 196, 0.4);
+    }
+
+    .c4 .dot {
+      color: #f97171;
+      border-color: rgba(249, 113, 113, 0.4);
+    }
+
+    .c5 .dot {
+      color: #60d9a4;
+      border-color: rgba(96, 217, 164, 0.4);
+    }
+
+    .c6 .dot {
+      color: #f4a261;
+      border-color: rgba(244, 162, 97, 0.4);
+    }
+
+    .c7 .dot {
+      color: #a8dadc;
+      border-color: rgba(168, 218, 220, 0.4);
+    }
+
+    .c8 .dot {
+      color: var(--muted);
+      border-color: rgba(136, 136, 153, 0.3);
+    }
+
+    /* COST TABLE */
+    .cost-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .cost-table th {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-align: left;
+      padding: 0.6rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cost-table td {
+      padding: 0.7rem 1rem;
+      font-size: 0.84rem;
+      border-bottom: 1px solid rgba(37, 37, 53, 0.5);
+      transition: background 0.2s;
+      vertical-align: middle;
+    }
+
+    .cost-table tr.total-row td {
+      border-bottom: none;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--accent);
+      border-top: 1px solid var(--border);
+    }
+
+    .cost-table tr:not(.total-row):hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .cost-table tr.phase-done td {
+      color: var(--muted);
+    }
+
+    .cost-table tr.phase-done td:last-child {
+      color: var(--success);
+    }
+
+    .cost-table tr.future-phase td {
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    .cost-phase-num {
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .cost-time {
+      color: var(--accent2);
+    }
+
+    .cost-amount {
+      color: var(--accent);
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+    }
+
+    .cost-amount.muted {
+      color: var(--muted);
+    }
+
+    .done-check {
+      font-size: 0.8rem;
+      color: var(--success);
+      margin-left: 0.4rem;
+    }
+
+    .pill-simplified {
+      font-size: 0.6rem;
+      background: rgba(37, 211, 102, 0.1);
+      color: var(--wa);
+      border: 1px solid rgba(37, 211, 102, 0.2);
+      padding: 0.1rem 0.45rem;
+      border-radius: 2rem;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+
+    .pill-future {
+      font-size: 0.6rem;
+      background: rgba(136, 136, 153, 0.1);
+      color: var(--muted);
+      border: 1px solid rgba(136, 136, 153, 0.2);
+      padding: 0.1rem 0.45rem;
+      border-radius: 2rem;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+
+    /* SUMMARY */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .summary-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+    }
+
+    .summary-card.gold::before {
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .summary-card.purple::before {
+      background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+    }
+
+    .summary-card.teal::before {
+      background: linear-gradient(90deg, transparent, var(--accent3), transparent);
+    }
+
+    .summary-card.green::before {
+      background: linear-gradient(90deg, transparent, var(--success), transparent);
+    }
+
+    .summary-card.wa::before {
+      background: linear-gradient(90deg, transparent, var(--wa), transparent);
+    }
+
+    .summary-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .summary-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .summary-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .summary-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 0 3rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-brand {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-brand span {
+      color: var(--accent);
+    }
+
+    .footer-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .reset-btn {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.75rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .reset-btn:hover {
+      color: #f97171;
+      border-color: rgba(249, 113, 113, 0.4);
+    }
+
+    @media (max-width: 600px) {
+      .phases::before {
+        left: 1.25rem;
+      }
+
+      .phase {
+        grid-template-columns: 2.5rem 1fr;
+        gap: 1rem;
+      }
+
+      .dot {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.6rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      header::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- HEADER -->
+    <header>
+      <div class="header-tag">Plan de Trabajo · 2025 — Actualizado</div>
+      <h1>Lobby PM<br><span>Roadmap técnico</span></h1>
+      <p class="header-sub">Plan simplificado: Hero con CTA a WhatsApp, propiedades con link a Airbnb. Sin buscador, sin
+        reservas directas por ahora.</p>
+      <div class="header-meta">
+        <div class="meta-item"><span class="meta-label">Duración total</span><span class="meta-value">~5–6
+            semanas</span></div>
+        <div class="meta-item"><span class="meta-label">Inversión estimada</span><span class="meta-value gold">$40,000 –
+            $71,500 MXN</span></div>
+        <div class="meta-item"><span class="meta-label">Stack</span><span class="meta-value">Next.js + Supabase</span>
+        </div>
+        <div class="meta-item"><span class="meta-label">Hero</span><span class="meta-value green">WhatsApp CTA</span>
+        </div>
+      </div>
+
+      <div class="decision-banner">
+        <span class="decision-icon">💬</span>
+        <div class="decision-text">
+          <strong>Decisión aplicada: Hero simplificado con botón WhatsApp</strong>
+          Sin buscador ni filtros — el Hero muestra imagen, título y CTA directo a WhatsApp. Las propiedades redirigen a
+          Airbnb. Fase 8 (funciones avanzadas) queda como futura cuando el negocio lo necesite.
+        </div>
+      </div>
+    </header>
+
+    <!-- GLOBAL PROGRESS -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <span class="progress-label">Progreso general</span>
+        <span class="progress-pct" id="global-pct">0%</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="global-bar"></div>
+      </div>
+      <div class="progress-counts" id="global-counts"><span>0</span> de <span id="total-tasks-count">0</span> tareas
+        completadas</div>
+    </div>
+
+    <!-- STACK -->
+    <div class="section">
+      <div class="section-header"><span class="section-title">Stack tecnológico</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="stack-grid">
+        <div class="stack-item"><span class="stack-emoji">⚡</span><span class="stack-name">Next.js</span><span
+            class="stack-role">Frontend + rutas</span></div>
+        <div class="stack-item"><span class="stack-emoji">🎨</span><span class="stack-name">Tailwind CSS</span><span
+            class="stack-role">Estilos UI</span></div>
+        <div class="stack-item"><span class="stack-emoji">🔷</span><span class="stack-name">TypeScript</span><span
+            class="stack-role">Tipado seguro</span></div>
+        <div class="stack-item"><span class="stack-emoji">🗄️</span><span class="stack-name">Supabase</span><span
+            class="stack-role">DB + Storage</span></div>
+        <div class="stack-item"><span class="stack-emoji">🚀</span><span class="stack-name">Vercel</span><span
+            class="stack-role">Deploy</span></div>
+        <div class="stack-item"><span class="stack-emoji">💬</span><span class="stack-name">WhatsApp</span><span
+            class="stack-role">CTA principal</span></div>
+      </div>
+    </div>
+
+    <!-- PHASES -->
+    <div class="section">
+      <div class="section-header"><span class="section-title">Fases del proyecto</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="phases" id="phases-container">
+
+        <!-- FASE 1 -->
+        <div class="phase c1" data-phase="1">
+          <div class="phase-dot">
+            <div class="dot" id="dot-1">01</div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-top">
+              <div class="phase-left">
+                <input type="checkbox" class="phase-check" id="pcheck-1">
+                <span class="phase-name">Rediseño del Home</span>
+              </div>
+              <div class="phase-badges">
+                <span class="badge badge-week">Semana 1</span>
+                <span class="badge badge-time">1–2 días</span>
+                <span class="badge badge-cost">$6,000–$10,500 MXN</span>
+                <span class="badge-simplified">✦ Simplificado</span>
+              </div>
+            </div>
+            <div class="phase-note">💬 Hero con imagen de fondo + título + subtítulo + botón "Contactar por WhatsApp" →
+              wa.me/tu-número. Sin buscador, sin filtros.</div>
+            <p class="phase-desc">Base visual moderna y modular. El buscador se reemplaza por un CTA directo a WhatsApp
+              — menos código, más conversión.</p>
+            <div class="tasks" id="tasks-1">
+              <label class="task-item"><input type="checkbox" data-phase="1" data-task="0"><span
+                  class="task-label">Hero: imagen de fondo + título</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="1" data-task="1"><span
+                  class="task-label">Botón WhatsApp (wa.me)</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="1" data-task="2"><span class="task-label">Grid
+                  de propiedades</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="1" data-task="3"><span
+                  class="task-label">Experiencias cercanas</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="1" data-task="4"><span
+                  class="task-label">Sección beneficios</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="1" data-task="5"><span
+                  class="task-label">Testimonios</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="1" data-task="6"><span class="task-label">CTA
+                  final</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="1" data-task="7"><span
+                  class="task-label">Componentes reutilizables</span></label>
+            </div>
+            <div class="phase-mini-progress">
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-fill" id="mini-1"></div>
+              </div><span class="mini-pct" id="mpct-1">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 2 -->
+        <div class="phase c2" data-phase="2">
+          <div class="phase-dot">
+            <div class="dot" id="dot-2">02</div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-top">
+              <div class="phase-left">
+                <input type="checkbox" class="phase-check" id="pcheck-2">
+                <span class="phase-name">Arquitectura de Datos</span>
+              </div>
+              <div class="phase-badges">
+                <span class="badge badge-week">Semana 1–2</span>
+                <span class="badge badge-time">1–2 días</span>
+                <span class="badge badge-cost">$4,000–$8,000 MXN</span>
+                <span class="badge-simplified">✦ Simplificado</span>
+              </div>
+            </div>
+            <div class="phase-note">💬 Sin tabla de disponibilidad ni calendario. Solo se guarda la info de cada
+              propiedad + link a Airbnb.</div>
+            <p class="phase-desc">Modelo de datos ligero. Cada propiedad tiene sus datos básicos y un campo <code
+                style="font-size:0.75rem;background:rgba(255,255,255,0.06);padding:0.1rem 0.35rem;border-radius:3px">airbnb_url</code>
+              para redirigir.</p>
+            <div class="tasks" id="tasks-2">
+              <label class="task-item"><input type="checkbox" data-phase="2" data-task="0"><span
+                  class="task-label">Tabla properties (con campo airbnb_url)</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="2" data-task="1"><span
+                  class="task-label">Tabla property_images</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="2" data-task="2"><span
+                  class="task-label">Tabla homepage_content</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="2" data-task="3"><span
+                  class="task-label">Slugs SEO</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="2" data-task="4"><span
+                  class="task-label">Supabase setup</span></label>
+            </div>
+            <div class="phase-mini-progress">
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-fill" id="mini-2"></div>
+              </div><span class="mini-pct" id="mpct-2">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 3 -->
+        <div class="phase c3" data-phase="3">
+          <div class="phase-dot">
+            <div class="dot" id="dot-3">03</div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-top">
+              <div class="phase-left">
+                <input type="checkbox" class="phase-check" id="pcheck-3">
+                <span class="phase-name">Dashboard — Home Content</span>
+              </div>
+              <div class="phase-badges">
+                <span class="badge badge-week">Semana 2</span>
+                <span class="badge badge-time">2–3 días</span>
+                <span class="badge badge-cost">$8,000–$14,500 MXN</span>
+              </div>
+            </div>
+            <p class="phase-desc">Panel para editar el home sin tocar código — título del Hero, texto del botón de
+              WhatsApp, número, y secciones activas.</p>
+            <div class="tasks" id="tasks-3">
+              <label class="task-item"><input type="checkbox" data-phase="3" data-task="0"><span
+                  class="task-label">Panel /admin</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="3" data-task="1"><span
+                  class="task-label">Editar Hero (título, subtítulo, imagen)</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="3" data-task="2"><span
+                  class="task-label">Editar número y mensaje de WhatsApp</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="3" data-task="3"><span
+                  class="task-label">Toggle secciones</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="3" data-task="4"><span
+                  class="task-label">Editar CTA final</span></label>
+            </div>
+            <div class="phase-mini-progress">
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-fill" id="mini-3"></div>
+              </div><span class="mini-pct" id="mpct-3">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 4 -->
+        <div class="phase c4" data-phase="4">
+          <div class="phase-dot">
+            <div class="dot" id="dot-4">04</div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-top">
+              <div class="phase-left">
+                <input type="checkbox" class="phase-check" id="pcheck-4">
+                <span class="phase-name">Dashboard — Propiedades</span>
+              </div>
+              <div class="phase-badges">
+                <span class="badge badge-week">Semana 3</span>
+                <span class="badge badge-time">2–4 días</span>
+                <span class="badge badge-cost">$10,000–$17,000 MXN</span>
+                <span class="badge-simplified">✦ Simplificado</span>
+              </div>
+            </div>
+            <div class="phase-note">💬 Sin calendario de disponibilidad. El campo clave es el link de Airbnb — todo el
+              botón "Reservar" apunta ahí.</div>
+            <p class="phase-desc">CRUD de propiedades con galería de imágenes, datos básicos y el link a Airbnb. Sin
+              complejidad de fechas ni disponibilidad.</p>
+            <div class="tasks" id="tasks-4">
+              <label class="task-item"><input type="checkbox" data-phase="4" data-task="0"><span
+                  class="task-label">Lista de propiedades</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="4" data-task="1"><span
+                  class="task-label">Formulario crear / editar</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="4" data-task="2"><span
+                  class="task-label">Campo URL de Airbnb</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="4" data-task="3"><span
+                  class="task-label">Multi-upload imágenes</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="4" data-task="4"><span class="task-label">Drag
+                  & drop galería</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="4" data-task="5"><span
+                  class="task-label">Toggle featured / publicado</span></label>
+            </div>
+            <div class="phase-mini-progress">
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-fill" id="mini-4"></div>
+              </div><span class="mini-pct" id="mpct-4">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 5 -->
+        <div class="phase c5" data-phase="5">
+          <div class="phase-dot">
+            <div class="dot" id="dot-5">05</div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-top">
+              <div class="phase-left">
+                <input type="checkbox" class="phase-check" id="pcheck-5">
+                <span class="phase-name">Páginas Dinámicas de Propiedades</span>
+              </div>
+              <div class="phase-badges">
+                <span class="badge badge-week">Semana 3–4</span>
+                <span class="badge badge-time">2–3 días</span>
+                <span class="badge badge-cost">$7,000–$12,500 MXN</span>
+                <span class="badge-simplified">✦ Simplificado</span>
+              </div>
+            </div>
+            <div class="phase-note">💬 El botón "Ver en Airbnb" abre el link directo. Sin formulario de reserva ni
+              calendario — cero backend extra.</div>
+            <p class="phase-desc">Cada propiedad tiene su página con galería y detalles. El único CTA es "Ver en Airbnb"
+              y "Contactar por WhatsApp".</p>
+            <div class="tasks" id="tasks-5">
+              <label class="task-item"><input type="checkbox" data-phase="5" data-task="0"><span class="task-label">Ruta
+                  /properties/[slug]</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="5" data-task="1"><span class="task-label">Hero
+                  imagen</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="5" data-task="2"><span
+                  class="task-label">Galería lightbox</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="5" data-task="3"><span
+                  class="task-label">Detalles (hab, baños, m², huéspedes)</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="5" data-task="4"><span
+                  class="task-label">Mapa</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="5" data-task="5"><span
+                  class="task-label">Botón "Ver en Airbnb" (airbnb_url)</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="5" data-task="6"><span
+                  class="task-label">Botón "Contactar por WhatsApp"</span></label>
+            </div>
+            <div class="phase-mini-progress">
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-fill" id="mini-5"></div>
+              </div><span class="mini-pct" id="mpct-5">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 6 -->
+        <div class="phase c6" data-phase="6">
+          <div class="phase-dot">
+            <div class="dot" id="dot-6">06</div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-top">
+              <div class="phase-left">
+                <input type="checkbox" class="phase-check" id="pcheck-6">
+                <span class="phase-name">Experiencias y Actividades</span>
+              </div>
+              <div class="phase-badges">
+                <span class="badge badge-week">Semana 4–5</span>
+                <span class="badge badge-time">2–3 días</span>
+                <span class="badge badge-cost">$6,500–$11,500 MXN</span>
+              </div>
+            </div>
+            <p class="phase-desc">Sección de experiencias locales: tours, restaurantes, beach clubs y actividades. Gran
+              diferenciador frente a Airbnb.</p>
+            <div class="tasks" id="tasks-6">
+              <label class="task-item"><input type="checkbox" data-phase="6" data-task="0"><span
+                  class="task-label">Tabla experiences</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="6" data-task="1"><span
+                  class="task-label">Categorías</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="6" data-task="2"><span
+                  class="task-label">Página /experiences</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="6" data-task="3"><span
+                  class="task-label">Tours</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="6" data-task="4"><span
+                  class="task-label">Restaurantes</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="6" data-task="5"><span
+                  class="task-label">Beach clubs</span></label>
+            </div>
+            <div class="phase-mini-progress">
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-fill" id="mini-6"></div>
+              </div><span class="mini-pct" id="mpct-6">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 7 -->
+        <div class="phase c7" data-phase="7">
+          <div class="phase-dot">
+            <div class="dot" id="dot-7">07</div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-top">
+              <div class="phase-left">
+                <input type="checkbox" class="phase-check" id="pcheck-7">
+                <span class="phase-name">SEO y Crecimiento Orgánico</span>
+              </div>
+              <div class="phase-badges">
+                <span class="badge badge-week">Semana 5–6</span>
+                <span class="badge badge-time">3–5 días</span>
+                <span class="badge badge-cost">$8,000–$14,500 MXN</span>
+              </div>
+            </div>
+            <p class="phase-desc">Páginas automáticas por destino, blog y optimización técnica. El tráfico orgánico
+              llega al sitio — no a Airbnb.</p>
+            <div class="tasks" id="tasks-7">
+              <label class="task-item"><input type="checkbox" data-phase="7" data-task="0"><span
+                  class="task-label">Sitemap automático</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="7" data-task="1"><span class="task-label">Meta
+                  tags dinámicos</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="7" data-task="2"><span
+                  class="task-label">Páginas por destino</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="7" data-task="3"><span class="task-label">Blog
+                  /blog</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="7" data-task="4"><span
+                  class="task-label">Schema markup</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="7" data-task="5"><span class="task-label">Open
+                  Graph</span></label>
+            </div>
+            <div class="phase-mini-progress">
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-fill" id="mini-7"></div>
+              </div><span class="mini-pct" id="mpct-7">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 8 — FUTURA -->
+        <div class="phase c8" data-phase="8">
+          <div class="phase-dot">
+            <div class="dot" id="dot-8">08</div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-top">
+              <div class="phase-left">
+                <input type="checkbox" class="phase-check" id="pcheck-8">
+                <span class="phase-name">Reservas Directas (Futuro)</span>
+              </div>
+              <div class="phase-badges">
+                <span class="badge badge-future">Cuando el negocio crezca</span>
+                <span class="badge badge-cost" style="opacity:0.5">A definir</span>
+              </div>
+            </div>
+            <div class="phase-note-future">⏳ Esta fase se activa cuando quieras dejar de depender de Airbnb y captar
+              reservas directas para eliminar comisiones.</div>
+            <p class="phase-desc">Buscador con fechas, calendario de disponibilidad, pasarela de pago. No tiene sentido
+              construirlo hoy — primero valida el sitio.</p>
+            <div class="tasks" id="tasks-8">
+              <label class="task-item"><input type="checkbox" data-phase="8" data-task="0"><span
+                  class="task-label">Buscador con filtros (fechas, huéspedes, precio)</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="8" data-task="1"><span
+                  class="task-label">Calendario de disponibilidad</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="8" data-task="2"><span
+                  class="task-label">Reservas directas + pasarela de pago</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="8" data-task="3"><span
+                  class="task-label">Sincronización con Airbnb (iCal)</span></label>
+              <label class="task-item"><input type="checkbox" data-phase="8" data-task="4"><span
+                  class="task-label">Panel de gestión de reservas</span></label>
+            </div>
+            <div class="phase-mini-progress">
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-fill" id="mini-8"></div>
+              </div><span class="mini-pct" id="mpct-8">0%</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- COST TABLE -->
+    <div class="section">
+      <div class="section-header"><span class="section-title">Tabla de costos</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="cost-wrap">
+        <table class="cost-table">
+          <thead>
+            <tr>
+              <th>Fase</th>
+              <th>Entregable</th>
+              <th>Tiempo</th>
+              <th>Costo estimado (MXN)</th>
+            </tr>
+          </thead>
+          <tbody id="cost-tbody">
+            <tr data-cost-phase="1">
+              <td class="cost-phase-num">01</td>
+              <td>Rediseño del Home <span class="pill-simplified">Simplificado</span></td>
+              <td class="cost-time">1–2 días</td>
+              <td class="cost-amount">$6,000 – $10,500</td>
+            </tr>
+            <tr data-cost-phase="2">
+              <td class="cost-phase-num">02</td>
+              <td>Arquitectura de datos <span class="pill-simplified">Simplificado</span></td>
+              <td class="cost-time">1–2 días</td>
+              <td class="cost-amount">$4,000 – $8,000</td>
+            </tr>
+            <tr data-cost-phase="3">
+              <td class="cost-phase-num">03</td>
+              <td>Dashboard Home Content</td>
+              <td class="cost-time">2–3 días</td>
+              <td class="cost-amount">$8,000 – $14,500</td>
+            </tr>
+            <tr data-cost-phase="4">
+              <td class="cost-phase-num">04</td>
+              <td>Dashboard Propiedades <span class="pill-simplified">Simplificado</span></td>
+              <td class="cost-time">2–4 días</td>
+              <td class="cost-amount">$10,000 – $17,000</td>
+            </tr>
+            <tr data-cost-phase="5">
+              <td class="cost-phase-num">05</td>
+              <td>Páginas dinámicas <span class="pill-simplified">Simplificado</span></td>
+              <td class="cost-time">2–3 días</td>
+              <td class="cost-amount">$7,000 – $12,500</td>
+            </tr>
+            <tr data-cost-phase="6">
+              <td class="cost-phase-num">06</td>
+              <td>Experiencias</td>
+              <td class="cost-time">2–3 días</td>
+              <td class="cost-amount">$6,500 – $11,500</td>
+            </tr>
+            <tr data-cost-phase="7">
+              <td class="cost-phase-num">07</td>
+              <td>SEO y Crecimiento</td>
+              <td class="cost-time">3–5 días</td>
+              <td class="cost-amount">$8,000 – $14,500</td>
+            </tr>
+            <tr data-cost-phase="8" class="future-phase">
+              <td class="cost-phase-num">08</td>
+              <td>Reservas directas <span class="pill-future">Futuro</span></td>
+              <td class="cost-time">A definir</td>
+              <td class="cost-amount muted">– –</td>
+            </tr>
+            <tr class="total-row">
+              <td></td>
+              <td><strong>TOTAL FASES 1–7</strong></td>
+              <td class="cost-time">~5–6 semanas</td>
+              <td class="cost-amount">$49,500 – $88,500</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.72rem;color:var(--muted);margin-top:0.75rem;font-style:italic;">* Tipo de cambio referencia:
+        1 USD ≈ 17.5 MXN. Con apoyo de IA (Cursor, Copilot) el costo puede reducirse 30–40%, quedando entre $34,500 y
+        $62,000 MXN.</p>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="section">
+      <div class="section-header"><span class="section-title">Lo que tendrás al terminar</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-card wa">
+          <div class="summary-icon">💬</div>
+          <div class="summary-label">Contacto directo</div>
+          <div class="summary-number" style="color:var(--wa)">WA</div>
+          <div class="summary-sub">Clientes te escriben sin pasar por Airbnb</div>
+        </div>
+        <div class="summary-card gold">
+          <div class="summary-icon">🏠</div>
+          <div class="summary-label">Propiedades</div>
+          <div class="summary-number" style="color:var(--accent)">∞</div>
+          <div class="summary-sub">CRUD completo, imágenes, link a Airbnb</div>
+        </div>
+        <div class="summary-card purple">
+          <div class="summary-icon">⚙️</div>
+          <div class="summary-label">Dashboard</div>
+          <div class="summary-number" style="color:var(--accent2)">100%</div>
+          <div class="summary-sub">Sin tocar código nunca más</div>
+        </div>
+        <div class="summary-card green">
+          <div class="summary-icon">📈</div>
+          <div class="summary-label">SEO Ready</div>
+          <div class="summary-number" style="color:var(--success)">✓</div>
+          <div class="summary-sub">Blog, páginas por destino, sitemap</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <span class="footer-brand">LOBBY <span>PM</span></span>
+      <span class="footer-note">Actualizado · Hero con WhatsApp · Propiedades → Airbnb · ~5–6 semanas</span>
+      <button class="reset-btn" onclick="resetAll()">Reiniciar progreso</button>
+    </footer>
+
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'lobbypm_progress_v2';
+    function loadState() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; } }
+    function saveState(s) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch { } }
+
+    function updatePhaseUI(phaseNum) {
+      const taskCbs = document.querySelectorAll(`input[type="checkbox"][data-phase="${phaseNum}"]`);
+      const total = taskCbs.length;
+      const done = Array.from(taskCbs).filter(c => c.checked).length;
+      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+      const miniBar = document.getElementById(`mini-${phaseNum}`);
+      const miniPct = document.getElementById(`mpct-${phaseNum}`);
+      if (miniBar) miniBar.style.width = pct + '%';
+      if (miniPct) miniPct.textContent = pct + '%';
+      const phaseEl = document.querySelector(`.phase[data-phase="${phaseNum}"]`);
+      const phaseCheck = document.getElementById(`pcheck-${phaseNum}`);
+      const allDone = (done === total && total > 0) || (phaseCheck && phaseCheck.checked);
+      if (phaseEl) phaseEl.classList.toggle('completed', allDone);
+      const costRow = document.querySelector(`tr[data-cost-phase="${phaseNum}"]`);
+      if (costRow) {
+        costRow.classList.toggle('phase-done', allDone);
+        const td2 = costRow.querySelector('td:nth-child(2)');
+        if (td2) {
+          const existing = td2.querySelector('.done-check');
+          if (allDone && !existing) td2.insertAdjacentHTML('beforeend', '<span class="done-check">✓</span>');
+          if (!allDone && existing) existing.remove();
+        }
+      }
+    }
+
+    function updateGlobalProgress() {
+      const allTasks = document.querySelectorAll('.tasks input[type="checkbox"]');
+      const done = Array.from(allTasks).filter(c => c.checked).length;
+      const total = allTasks.length;
+      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+      document.getElementById('global-bar').style.width = pct + '%';
+      document.getElementById('global-pct').textContent = pct + '%';
+      document.getElementById('global-counts').innerHTML = `<span>${done}</span> de <span>${total}</span> tareas completadas`;
+    }
+
+    function initTaskCheckbox(cb) {
+      const phase = cb.dataset.phase, task = cb.dataset.task;
+      const s = loadState();
+      if (s[`p${phase}_t${task}`]) { cb.checked = true; cb.closest('.task-item')?.classList.add('done'); }
+      cb.addEventListener('change', () => {
+        const st = loadState(); st[`p${phase}_t${task}`] = cb.checked; saveState(st);
+        cb.closest('.task-item')?.classList.toggle('done', cb.checked);
+        updatePhaseUI(phase); updateGlobalProgress();
+      });
+    }
+
+    function initPhaseCheck(n) {
+      const cb = document.getElementById(`pcheck-${n}`); if (!cb) return;
+      const s = loadState(); if (s[`phase_${n}`]) cb.checked = true;
+      cb.addEventListener('change', () => {
+        const st = loadState(); st[`phase_${n}`] = cb.checked; saveState(st);
+        if (cb.checked) {
+          document.querySelectorAll(`input[type="checkbox"][data-phase="${n}"]`).forEach(tcb => {
+            tcb.checked = true; tcb.closest('.task-item')?.classList.add('done');
+            st[`p${n}_t${tcb.dataset.task}`] = true;
+          }); saveState(st);
+        }
+        updatePhaseUI(n); updateGlobalProgress();
+      });
+    }
+
+    function resetAll() {
+      if (!confirm('¿Reiniciar todo el progreso?')) return;
+      try { localStorage.removeItem(STORAGE_KEY); } catch { }
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked = false; cb.closest('.task-item')?.classList.remove('done'); });
+      document.querySelectorAll('.phase').forEach(p => p.classList.remove('completed'));
+      document.querySelectorAll('.done-check').forEach(el => el.remove());
+      document.querySelectorAll('[id^="mini-"]').forEach(el => el.style.width = '0%');
+      document.querySelectorAll('[id^="mpct-"]').forEach(el => el.textContent = '0%');
+      document.querySelectorAll('tr[data-cost-phase]').forEach(tr => tr.classList.remove('phase-done'));
+      document.getElementById('global-bar').style.width = '0%';
+      document.getElementById('global-pct').textContent = '0%';
+      updateGlobalProgress();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.tasks input[type="checkbox"]').forEach(cb => initTaskCheckbox(cb));
+      for (let i = 1; i <= 8; i++) initPhaseCheck(i);
+      for (let i = 1; i <= 8; i++) updatePhaseUI(i);
+      updateGlobalProgress();
+    });
+  </script>
+</body>
+
+</html>
