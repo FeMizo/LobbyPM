@@ -1,7 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { TextAreaField, TextInputField } from '../components/ui/FormControls';
-import { homepageSeed } from '../data/homepage';
-import { getHomepageContent, resetHomepageContent, saveHomepageContent } from '../lib/cms/homepageStore';
+import { getHomepageContent, saveHomepageContent } from '../lib/cms/homepageStore';
 import type { HomepageContent } from '../types/homepage';
 import { AdminLayout } from './AdminLayout';
 
@@ -23,6 +22,7 @@ function SectionField({
       <span className="mb-2 block text-sm font-semibold text-warm-text">{label}</span>
       {multiline ? (
         <TextAreaField
+          tone="admin"
           rows={4}
           value={value}
           placeholder={placeholder}
@@ -31,6 +31,7 @@ function SectionField({
         />
       ) : (
         <TextInputField
+          tone="admin"
           value={value}
           placeholder={placeholder}
           onChange={(event) => onChange(event.target.value)}
@@ -52,8 +53,8 @@ function EditorSection({
   return (
     <section className="admin-card p-7">
       <h2 className="text-2xl font-bold text-warm-text">{title}</h2>
-      <p className="mt-2 text-sm leading-7 text-warm-muted">{description}</p>
-      <div className="mt-6 grid gap-4">{children}</div>
+      <p className="text-sm leading-7 text-warm-muted">{description}</p>
+      <div className="grid gap-4">{children}</div>
     </section>
   );
 }
@@ -69,12 +70,6 @@ export function AdminHomeEditorPage() {
   function handleSave() {
     saveHomepageContent(draft);
     setSavedAt(new Date().toLocaleTimeString());
-  }
-
-  function handleReset() {
-    resetHomepageContent();
-    setDraft(structuredClone(homepageSeed));
-    setSavedAt(null);
   }
 
   return (
@@ -307,14 +302,14 @@ export function AdminHomeEditorPage() {
           </EditorSection>
         </div>
 
-        <aside className="space-y-6">
+        <aside className="flex h-full flex-col gap-6">
           <section className="admin-card p-7">
             <h2 className="text-2xl font-bold text-warm-text">Publicación</h2>
-            <p className="mt-3 leading-7 text-warm-muted">
+            <p className="leading-7 text-warm-muted">
               El contenido se guarda localmente mediante un repositorio estilo CMS. Eso deja una interfaz limpia para migrar después a API o SQLite.
             </p>
 
-            <div className="mt-6 space-y-3">
+            <div>
               <button
                 type="button"
                 onClick={handleSave}
@@ -322,16 +317,9 @@ export function AdminHomeEditorPage() {
               >
                 Guardar homepage
               </button>
-              <button
-                type="button"
-                onClick={handleReset}
-                className="inline-flex w-full justify-center rounded-2xl border border-warm-sand bg-white px-5 py-4 text-sm font-bold uppercase tracking-[0.2em] text-warm-text hover:border-primary hover:text-primary"
-              >
-                Restaurar valores iniciales
-              </button>
             </div>
 
-            <div className="mt-6 rounded-[1.5rem] bg-warm-sand/50 p-4 text-sm text-warm-muted">
+            <div className="rounded-[1.5rem] bg-warm-sand/50 p-4 text-sm text-warm-muted">
               <p>Estado: {hasChanges ? 'Cambios sin guardar' : 'Guardado'}</p>
               <p className="mt-1">Último guardado: {savedAt ?? 'Sin guardar en esta sesión'}</p>
             </div>
@@ -339,7 +327,7 @@ export function AdminHomeEditorPage() {
 
           <section className="admin-card p-7">
             <h2 className="text-2xl font-bold text-warm-text">Editable ahora</h2>
-            <ul className="mt-4 space-y-3 text-sm leading-7 text-warm-muted">
+            <ul className="grid gap-3 text-sm leading-7 text-warm-muted">
               <li>Hero: titular, subtítulo, CTAs, URLs e imagen.</li>
               <li>Propiedades destacadas: título, subtítulo y CTA.</li>
               <li>Experiencias: título, subtítulo y CTA.</li>
@@ -347,9 +335,9 @@ export function AdminHomeEditorPage() {
             </ul>
           </section>
 
-          <section className="admin-card p-7">
+          <section className="admin-card mt-auto p-7">
             <h2 className="text-2xl font-bold text-warm-text">Siguientes módulos CMS</h2>
-            <ul className="mt-4 space-y-3 text-sm leading-7 text-warm-muted">
+            <ul className="grid gap-3 text-sm leading-7 text-warm-muted">
               <li>CRUD de propiedades con amenidades, galerías y estado.</li>
               <li>Gestión de experiencias y guías locales.</li>
               <li>Testimonials, blog y settings globales.</li>

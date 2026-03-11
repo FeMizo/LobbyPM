@@ -38,7 +38,11 @@ export interface PropertySummary {
   price: string;
   rating: number;
   href: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  guests?: number;
   amenities?: string[];
+  externalAmenities?: string[];
   externalLink?: LinkAction;
 }
 

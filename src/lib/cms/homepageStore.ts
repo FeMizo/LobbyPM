@@ -60,17 +60,6 @@ export function saveHomepageContent(content: HomepageContent) {
   window.dispatchEvent(new Event(STORE_EVENT));
 }
 
-export function resetHomepageContent() {
-  if (!canUseStorage()) {
-    return;
-  }
-
-  cachedRaw = '';
-  cachedSnapshot = cloneSeed();
-  window.localStorage.removeItem(STORAGE_KEY);
-  window.dispatchEvent(new Event(STORE_EVENT));
-}
-
 function subscribe(callback: () => void) {
   if (typeof window === 'undefined') {
     return () => undefined;

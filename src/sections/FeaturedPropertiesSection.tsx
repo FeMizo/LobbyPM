@@ -1,4 +1,5 @@
 import { MapPin, Star } from 'lucide-react';
+import { AnimatePresence } from 'motion/react';
 import { memo, useCallback, useState } from 'react';
 import { ButtonLink } from '../components/ui/ButtonLink';
 import { PropertyDetailsModal } from '../components/ui/PropertyDetailsModal';
@@ -10,6 +11,7 @@ import type { FeaturedPropertiesContent, PropertySummary } from '../types/homepa
 
 interface FeaturedPropertiesSectionProps {
   content: FeaturedPropertiesContent;
+  items?: PropertySummary[];
 }
 
 const PropertyCard = memo(function PropertyCard({
@@ -60,8 +62,9 @@ const PropertyCard = memo(function PropertyCard({
   );
 });
 
-export function FeaturedPropertiesSection({ content }: FeaturedPropertiesSectionProps) {
+export function FeaturedPropertiesSection({ content, items }: FeaturedPropertiesSectionProps) {
   const [selectedProperty, setSelectedProperty] = useState<PropertySummary | null>(null);
+  const displayItems = items?.length ? items : content.items;
 
   const openDetails = useCallback((property: PropertySummary) => {
     setSelectedProperty(property);
@@ -81,12 +84,20 @@ export function FeaturedPropertiesSection({ content }: FeaturedPropertiesSection
       </div>
 
       <div className="mt-14 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        {content.items.map((item, index) => (
-          <PropertyCard key={item.id} item={item} index={index} onOpenDetails={openDetails} />
-        ))}
+        {displayItems.length > 0 ? (
+          displayItems.map((item, index) => (
+            <PropertyCard key={item.id} item={item} index={index} onOpenDetails={openDetails} />
+          ))
+        ) : (
+          <div className="rounded-[2rem] border border-dashed border-warm-muted/30 bg-white/70 p-8 text-center text-warm-muted md:col-span-2 xl:col-span-3">
+            Aun no hay propiedades publicadas. Agrega una desde /admin/properties.
+          </div>
+        )}
       </div>
 
-      <PropertyDetailsModal property={selectedProperty} onClose={closeDetails} />
+      <AnimatePresence>
+        {selectedProperty && <PropertyDetailsModal property={selectedProperty} onClose={closeDetails} />}
+      </AnimatePresence>
     </SectionShell>
   );
 }

@@ -17,9 +17,16 @@ const ExperienceCard = memo(function ExperienceCard({
   item: ExperienceSummary;
   index: number;
 }) {
+  const isExternal = item.href.startsWith('http');
+
   return (
     <Reveal delay={index * 0.05} className="group">
-      <a href={item.href} className="block overflow-hidden rounded-[2rem] bg-white shadow-[0_18px_45px_rgba(74,63,53,0.08)]">
+      <a
+        href={item.href}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noreferrer noopener' : undefined}
+        className="block overflow-hidden rounded-[2rem] bg-white shadow-[0_18px_45px_rgba(74,63,53,0.08)]"
+      >
         <div className="relative">
           <img
             src={item.image.src}
@@ -45,11 +52,20 @@ const ExperienceCard = memo(function ExperienceCard({
 });
 
 export function ExperiencesSection({ content }: ExperiencesSectionProps) {
+  const isHeadingCtaExternal = content.cta.href.startsWith('http');
+  const isConciergeCtaExternal = content.concierge.cta.href.startsWith('http');
+
   return (
     <SectionShell id="experiences" className="bg-warm-sand/25">
       <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <SectionIntro heading={content.heading} />
-        <ButtonLink href={content.cta.href} variant="outline" width="fit">
+        <ButtonLink
+          href={content.cta.href}
+          target={isHeadingCtaExternal ? '_blank' : undefined}
+          rel={isHeadingCtaExternal ? 'noreferrer noopener' : undefined}
+          variant="outline"
+          width="fit"
+        >
           {content.cta.label}
         </ButtonLink>
       </div>
@@ -66,7 +82,12 @@ export function ExperiencesSection({ content }: ExperiencesSectionProps) {
           <h3 className="mt-5 text-4xl font-bold leading-tight text-warm-text">{content.concierge.title}</h3>
           <p className="mt-5 text-base leading-8 text-warm-muted">{content.concierge.description}</p>
           <div className="mt-8">
-            <ButtonLink href={content.concierge.cta.href} width="fit">
+            <ButtonLink
+              href={content.concierge.cta.href}
+              target={isConciergeCtaExternal ? '_blank' : undefined}
+              rel={isConciergeCtaExternal ? 'noreferrer noopener' : undefined}
+              width="fit"
+            >
               {content.concierge.cta.label}
             </ButtonLink>
           </div>

@@ -1,4 +1,4 @@
-export type FormControlTone = 'default' | 'inverse';
+export type FormControlTone = 'default' | 'inverse' | 'admin';
 export type FormControlWidth = 'full' | 'fit' | 'auto';
 
 const formControlBaseClass =
@@ -9,6 +9,8 @@ const formControlToneClasses: Record<FormControlTone, string> = {
     'border-warm-sand bg-warm-sand/72 text-warm-text placeholder:text-warm-muted focus:border-primary focus:bg-white focus-visible:ring-primary/55',
   inverse:
     'border-white/20 bg-white/16 text-white placeholder:text-white/52 focus:border-accent focus:bg-white/22 focus-visible:ring-accent/70 focus-visible:ring-offset-primary',
+  admin:
+    'border-[#e2d8cb] bg-white text-warm-text placeholder:text-warm-muted/85 focus:border-primary focus:bg-white focus-visible:ring-primary/55 focus-visible:ring-offset-white disabled:border-warm-sand disabled:bg-warm-sand/60 disabled:text-warm-muted',
 };
 
 const formControlWidthClasses: Record<FormControlWidth, string> = {

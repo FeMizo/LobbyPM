@@ -1,9 +1,12 @@
-import { lazy, useCallback, useState, type MouseEventHandler } from 'react';
+import { lazy, useCallback, useMemo, useState, type MouseEventHandler } from 'react';
 import { Footer } from '../components/layout/Footer';
 import { Navbar } from '../components/layout/Navbar';
+import { FloatingWhatsApp } from '../components/ui/FloatingWhatsApp';
 import { PropertiesPopup } from '../components/ui/PropertiesPopup';
 import { ViewportLoader } from '../components/ui/ViewportLoader';
 import { useHomepageContent } from '../lib/cms/homepageStore';
+import { mapManagedPropertiesToFeatured } from '../lib/adapters/managedPropertyMappers';
+import { useManagedProperties } from '../lib/repositories/propertiesRepository';
 import { Seo } from '../lib/seo';
 import { AboutSection } from '../sections/AboutSection';
 import { ContactSection } from '../sections/ContactSection';
@@ -22,7 +25,9 @@ function getAbsoluteUrl(path: string, baseUrl: string) {
 
 export function HomePage() {
   const content = useHomepageContent();
+  const managedProperties = useManagedProperties();
   const [isPropertiesPopupOpen, setIsPropertiesPopupOpen] = useState(false);
+  const featuredItems = useMemo(() => mapManagedPropertiesToFeatured(managedProperties), [managedProperties]);
   const canonical = getAbsoluteUrl(content.seo.canonicalPath, content.site.baseUrl);
   const openPropertiesPopup = useCallback<MouseEventHandler<HTMLAnchorElement>>((event) => {
     event.preventDefault();
@@ -76,7 +81,7 @@ export function HomePage() {
       <main>
         <HeroSection content={content.hero} onPrimaryCtaClick={openPropertiesPopup} />
         <AboutSection content={content.about} />
-        <FeaturedPropertiesSection content={content.featuredProperties} />
+        <FeaturedPropertiesSection content={content.featuredProperties} items={featuredItems} />
         <WhyChooseUsSection content={content.whyChooseUs} />
         <ExperiencesSection content={content.experiences} />
         <ContactSection content={content.contact} />
@@ -93,8 +98,14 @@ export function HomePage() {
       </main>
       <PropertiesPopup
         isOpen={isPropertiesPopupOpen}
-        properties={content.featuredProperties.items}
+        properties={featuredItems}
         onClose={closePropertiesPopup}
+      />
+      <FloatingWhatsApp
+        contacts={[
+          { label: 'Reservas', phone: content.contact.phonePrimary, href: content.contact.phonePrimaryHref },
+          { label: 'Atención', phone: content.contact.phoneSecondary, href: content.contact.phoneSecondaryHref },
+        ]}
       />
       <Footer contact={content.contact} site={content.site} />
     </div>

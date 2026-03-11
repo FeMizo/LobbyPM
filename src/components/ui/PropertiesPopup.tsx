@@ -63,46 +63,52 @@ export function PropertiesPopup({ isOpen, properties, onClose }: PropertiesPopup
 
         <div className="max-h-[70vh] overflow-y-auto px-6 py-6 md:px-8">
           <div className="grid gap-5 md:grid-cols-2">
-            {properties.map((property) => {
-              const externalLink = property.externalLink ?? { label: 'Solicitar', href: property.href };
+            {properties.length > 0 ? (
+              properties.map((property) => {
+                const externalLink = property.externalLink ?? { label: 'Solicitar', href: property.href };
 
-              return (
-                <article key={property.id} className="overflow-hidden rounded-3xl border border-warm-sand bg-warm-bg/45">
-                  <PropertyImage
-                    image={property.image}
-                    size="card"
-                    hover="soft"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <div className="p-5">
-                    <div className="flex items-start justify-between gap-3">
-                      <h3 className="text-2xl font-bold text-warm-text">{property.name}</h3>
-                      <span className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-semibold text-warm-text shadow-sm">
-                        <Star size={13} className="fill-accent text-accent" />
-                        {property.rating.toFixed(1)}
-                      </span>
+                return (
+                  <article key={property.id} className="overflow-hidden rounded-3xl border border-warm-sand bg-warm-bg/45">
+                    <PropertyImage
+                      image={property.image}
+                      size="card"
+                      hover="soft"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <div className="p-5">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="text-2xl font-bold text-warm-text">{property.name}</h3>
+                        <span className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-semibold text-warm-text shadow-sm">
+                          <Star size={13} className="fill-accent text-accent" />
+                          {property.rating.toFixed(1)}
+                        </span>
+                      </div>
+                      <p className="mt-2 flex items-center gap-2 text-sm text-warm-muted">
+                        <MapPin size={15} /> {property.location}
+                      </p>
+                      <p className="mt-4 text-sm leading-7 text-warm-muted">{property.description}</p>
+                      <div className="mt-5 flex items-center justify-between gap-3">
+                        <p className="text-sm font-bold text-primary">{property.price}</p>
+                        <ButtonLink
+                          href={externalLink.href}
+                          variant="outline"
+                          width="fit"
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="px-4 py-2 text-[11px] uppercase tracking-[0.14em]"
+                        >
+                          {externalLink.label}
+                        </ButtonLink>
+                      </div>
                     </div>
-                    <p className="mt-2 flex items-center gap-2 text-sm text-warm-muted">
-                      <MapPin size={15} /> {property.location}
-                    </p>
-                    <p className="mt-4 text-sm leading-7 text-warm-muted">{property.description}</p>
-                    <div className="mt-5 flex items-center justify-between gap-3">
-                      <p className="text-sm font-bold text-primary">{property.price}</p>
-                      <ButtonLink
-                        href={externalLink.href}
-                        variant="outline"
-                        width="fit"
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="px-4 py-2 text-[11px] uppercase tracking-[0.14em]"
-                      >
-                        {externalLink.label}
-                      </ButtonLink>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
+                  </article>
+                );
+              })
+            ) : (
+              <div className="rounded-3xl border border-dashed border-warm-muted/35 bg-white/80 p-8 text-center text-warm-muted md:col-span-2">
+                Aun no hay propiedades publicadas para mostrar.
+              </div>
+            )}
           </div>
         </div>
       </div>
