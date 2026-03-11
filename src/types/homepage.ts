@@ -38,6 +38,8 @@ export interface PropertySummary {
   price: string;
   rating: number;
   href: string;
+  amenities?: string[];
+  externalLink?: LinkAction;
 }
 
 export interface ExperienceSummary {

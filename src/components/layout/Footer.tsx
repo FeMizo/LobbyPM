@@ -22,7 +22,7 @@ export function Footer({ contact, site }: FooterProps) {
             gestión de propiedades
           </p>
           <p className="mt-6 max-w-md leading-8 text-warm-bg/70">
-            Gestión boutique de rentas vacacionales en Playa del Carmen, con estancias curadas, atención cálida y una base preparada para escalar a un CMS interno completo.
+            Gestión boutique de rentas vacacionales en Mérida, Yucatán, con estancias curadas, atención cálida y una base preparada para escalar a un CMS interno completo.
           </p>
         </div>
 

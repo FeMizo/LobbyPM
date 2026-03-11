@@ -1,4 +1,5 @@
 import { Building2, PencilLine, Sparkles } from 'lucide-react';
+import { ButtonLink } from '../components/ui/ButtonLink';
 import { AdminLayout } from './AdminLayout';
 
 const roadmap = [
@@ -62,9 +63,9 @@ export function AdminDashboardPage() {
               <h2 className="mt-6 text-2xl font-bold text-warm-text">{item.title}</h2>
               <p className="mt-3 min-h-20 leading-7 text-warm-muted">{item.description}</p>
               {item.available ? (
-                <a href={item.href} className="mt-6 inline-flex btn-primary px-5 py-2 text-xs">
+                <ButtonLink href={item.href} width="fit" className="mt-6 px-5 py-2 text-xs">
                   Abrir módulo
-                </a>
+                </ButtonLink>
               ) : (
                 <span className="mt-6 inline-flex rounded-full bg-warm-sand px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-warm-muted">
                   Siguiente fase

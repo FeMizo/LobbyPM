@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react';
+import { TextAreaField, TextInputField } from '../components/ui/FormControls';
 import { homepageSeed } from '../data/homepage';
 import { getHomepageContent, resetHomepageContent, saveHomepageContent } from '../lib/cms/homepageStore';
 import type { HomepageContent } from '../types/homepage';
@@ -21,18 +22,17 @@ function SectionField({
     <label className="block">
       <span className="mb-2 block text-sm font-semibold text-warm-text">{label}</span>
       {multiline ? (
-        <textarea
+        <TextAreaField
           rows={4}
           value={value}
           placeholder={placeholder}
-          className="input-base resize-none"
+          className="resize-none"
           onChange={(event) => onChange(event.target.value)}
         />
       ) : (
-        <input
+        <TextInputField
           value={value}
           placeholder={placeholder}
-          className="input-base"
           onChange={(event) => onChange(event.target.value)}
         />
       )}

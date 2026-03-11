@@ -1,12 +1,14 @@
+import type { MouseEventHandler } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ButtonLink } from '../components/ui/ButtonLink';
 import type { HeroContent } from '../types/homepage';
 
 interface HeroSectionProps {
   content: HeroContent;
+  onPrimaryCtaClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
-export function HeroSection({ content }: HeroSectionProps) {
+export function HeroSection({ content, onPrimaryCtaClick }: HeroSectionProps) {
   const reduceMotion = useReducedMotion();
 
   return (
@@ -52,11 +54,13 @@ export function HeroSection({ content }: HeroSectionProps) {
             transition={{ duration: 0.65, delay: 0.24 }}
             className="mt-10 flex flex-col gap-4 sm:flex-row"
           >
-            <ButtonLink href={content.primaryCta.href}>{content.primaryCta.label}</ButtonLink>
+            <ButtonLink href={content.primaryCta.href} width="fit" onClick={onPrimaryCtaClick}>
+              {content.primaryCta.label}
+            </ButtonLink>
             <ButtonLink
               href={content.secondaryCta.href}
-              variant="outline"
-              className="border-white text-white hover:border-white hover:bg-white hover:text-primary"
+              variant="outlineLight"
+              width="fit"
             >
               {content.secondaryCta.label}
             </ButtonLink>

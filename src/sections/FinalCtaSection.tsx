@@ -25,7 +25,9 @@ export default function FinalCtaSection({ content }: FinalCtaSectionProps) {
         <h2 className="text-4xl font-bold leading-tight text-white md:text-6xl">{content.title}</h2>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/85">{content.text}</p>
         <div className="mt-10">
-          <ButtonLink href={content.button.href}>{content.button.label}</ButtonLink>
+          <ButtonLink href={content.button.href} width="fit">
+            {content.button.label}
+          </ButtonLink>
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
-import { lazy } from 'react';
+import { lazy, useCallback, useState, type MouseEventHandler } from 'react';
 import { Footer } from '../components/layout/Footer';
 import { Navbar } from '../components/layout/Navbar';
+import { PropertiesPopup } from '../components/ui/PropertiesPopup';
 import { ViewportLoader } from '../components/ui/ViewportLoader';
 import { useHomepageContent } from '../lib/cms/homepageStore';
 import { Seo } from '../lib/seo';
@@ -21,7 +22,15 @@ function getAbsoluteUrl(path: string, baseUrl: string) {
 
 export function HomePage() {
   const content = useHomepageContent();
+  const [isPropertiesPopupOpen, setIsPropertiesPopupOpen] = useState(false);
   const canonical = getAbsoluteUrl(content.seo.canonicalPath, content.site.baseUrl);
+  const openPropertiesPopup = useCallback<MouseEventHandler<HTMLAnchorElement>>((event) => {
+    event.preventDefault();
+    setIsPropertiesPopupOpen(true);
+  }, []);
+  const closePropertiesPopup = useCallback(() => {
+    setIsPropertiesPopupOpen(false);
+  }, []);
 
   const schema = [
     {
@@ -40,8 +49,8 @@ export function HomePage() {
       description: content.seo.description,
       address: {
         '@type': 'PostalAddress',
-        addressLocality: 'Playa del Carmen',
-        addressRegion: 'Quintana Roo',
+        addressLocality: 'Mérida',
+        addressRegion: 'Yucatán',
         addressCountry: 'MX',
       },
       telephone: content.contact.phonePrimary,
@@ -65,7 +74,7 @@ export function HomePage() {
 
       <Navbar site={content.site} />
       <main>
-        <HeroSection content={content.hero} />
+        <HeroSection content={content.hero} onPrimaryCtaClick={openPropertiesPopup} />
         <AboutSection content={content.about} />
         <FeaturedPropertiesSection content={content.featuredProperties} />
         <WhyChooseUsSection content={content.whyChooseUs} />
@@ -82,6 +91,11 @@ export function HomePage() {
           <FinalCtaSection content={content.finalCta} />
         </ViewportLoader>
       </main>
+      <PropertiesPopup
+        isOpen={isPropertiesPopupOpen}
+        properties={content.featuredProperties.items}
+        onClose={closePropertiesPopup}
+      />
       <Footer contact={content.contact} site={content.site} />
     </div>
   );

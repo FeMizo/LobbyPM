@@ -2,18 +2,18 @@ import type { HomepageContent } from '../types/homepage';
 
 export const homepageSeed: HomepageContent = {
   seo: {
-    title: 'Rentas vacacionales en Playa del Carmen | Lobby PM',
+    title: 'Rentas vacacionales en Mérida, Yucatán | Lobby PM',
     description:
-      'Rentas vacacionales boutique en Playa del Carmen con atención personalizada, experiencias locales y estancias premium en Riviera Maya.',
+      'Rentas vacacionales boutique en Mérida, Yucatán con atención personalizada, experiencias locales y estancias premium en Riviera Maya.',
     canonicalPath: '/',
     ogImage:
       'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1600&q=80',
     keywords: [
-      'rentas vacacionales Playa del Carmen',
+      'rentas vacacionales Mérida, Yucatán',
       'casas vacacionales Riviera Maya',
-      'estancias premium Playa del Carmen',
-      'property management Playa del Carmen',
-      'concierge Playa del Carmen',
+      'estancias premium Mérida, Yucatán',
+      'property management Mérida, Yucatán',
+      'concierge Mérida, Yucatán',
     ],
   },
   site: {
@@ -22,8 +22,8 @@ export const homepageSeed: HomepageContent = {
     instagram: 'https://www.instagram.com/lobbypm/',
   },
   hero: {
-    eyebrow: 'Hospitality en Playa del Carmen',
-    headline: 'Rentas vacacionales cálidas, premium y bien ubicadas en Playa del Carmen',
+    eyebrow: 'Hospitality en Mérida, Yucatán',
+    headline: 'Rentas vacacionales cálidas, premium y bien ubicadas en Mérida, Yucatán',
     subheadline:
       'Hospédate cerca de la playa, la Quinta Avenida y las mejores experiencias de Riviera Maya con un equipo local que cuida cada detalle de tu llegada y estancia.',
     primaryCta: {
@@ -36,7 +36,7 @@ export const homepageSeed: HomepageContent = {
     },
     image: {
       src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1920&q=80',
-      alt: 'Interior de renta vacacional premium en Playa del Carmen con diseño cálido y acogedor',
+      alt: 'Interior de renta vacacional premium en Mérida, Yucatán con diseño cálido y acogedor',
     },
     stats: [
       { value: '20+', label: 'propiedades gestionadas' },
@@ -47,17 +47,17 @@ export const homepageSeed: HomepageContent = {
   about: {
     heading: {
       eyebrow: 'Sobre Lobby PM',
-      title: 'Una forma más cálida de hospedarte en Playa del Carmen',
+      title: 'Una forma más cálida de hospedarte en Mérida, Yucatán',
       description:
         'Combinamos estándares premium de renta vacacional con una operación cercana, interiores cuidados y recomendaciones que hacen cada estancia más personal.',
     },
     paragraphs: [
-      'Lobby PM administra rentas vacacionales boutique pensadas para familias, parejas y viajeros que buscan comodidad, privacidad y una experiencia bien resuelta en Playa del Carmen.',
+      'Lobby PM administra rentas vacacionales boutique pensadas para familias, parejas y viajeros que buscan comodidad, privacidad y una experiencia bien resuelta en Mérida, Yucatán.',
       'Desde el check-in hasta la planeación de concierge, cuidamos la operación, los detalles de hospitalidad y el conocimiento del destino para que cada estancia fluya sin fricción.',
     ],
     image: {
       src: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80',
-      alt: 'Sala elegante dentro de una propiedad vacacional premium en Playa del Carmen',
+      alt: 'Sala elegante dentro de una propiedad vacacional premium en Mérida, Yucatán',
     },
     stats: [
       { value: '4.9/5', label: 'calificación promedio' },
@@ -73,7 +73,7 @@ export const homepageSeed: HomepageContent = {
       eyebrow: 'Propiedades destacadas',
       title: 'Estancias seleccionadas para escapadas de playa, viajes largos y llegadas sin complicaciones',
       description:
-        'Cada propiedad se selecciona por ubicación, confort y calidad de diseño, con soporte ágil y atención local de nuestro equipo en Playa del Carmen.',
+        'Cada propiedad se selecciona por ubicación, confort y calidad de diseño, con soporte ágil y atención local de nuestro equipo en Mérida, Yucatán.',
     },
     cta: {
       label: 'Ver todas las propiedades',
@@ -83,21 +83,26 @@ export const homepageSeed: HomepageContent = {
       {
         id: 'coral-loft',
         name: 'Coral Loft',
-        location: 'Gonzalo Guerrero, Playa del Carmen',
+        location: 'Gonzalo Guerrero, Mérida, Yucatán',
         description:
           'Refugio moderno de una recámara cerca de la Quinta Avenida, con rooftop pool, restaurantes a distancia caminable y una atmósfera tranquila.',
         image: {
           src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
-          alt: 'Loft moderno de renta vacacional en Playa del Carmen',
+          alt: 'Loft moderno de renta vacacional en Mérida, Yucatán',
         },
         price: 'Desde $145 USD por noche',
         rating: 4.9,
         href: '#contact',
+        amenities: ['Wifi', 'Rooftop pool', 'Aire acondicionado', 'Cocina equipada'],
+        externalLink: {
+          label: 'Ver en Airbnb',
+          href: 'https://www.airbnb.com/s/Merida--Yucatan--Mexico/homes?query=Coral%20Loft',
+        },
       },
       {
         id: 'marea-residence',
         name: 'Marea Residence',
-        location: 'Playacar, Playa del Carmen',
+        location: 'Playacar, Mérida, Yucatán',
         description:
           'Casa espaciosa para familias con plunge pool privada, terraza sombreada y acceso rápido a beach clubs, golf y traslados.',
         image: {
@@ -107,62 +112,87 @@ export const homepageSeed: HomepageContent = {
         price: 'Desde $280 USD por noche',
         rating: 5,
         href: '#contact',
+        amenities: ['Plunge pool', 'Estacionamiento', 'Cocina integral', 'Ideal para familias'],
+        externalLink: {
+          label: 'Ver en Airbnb',
+          href: 'https://www.airbnb.com/s/Merida--Yucatan--Mexico/homes?query=Marea%20Residence',
+        },
       },
       {
         id: 'selva-suite',
         name: 'Selva Suite',
-        location: 'Aldea Thai, Playa del Carmen',
+        location: 'Aldea Thai, Mérida, Yucatán',
         description:
           'Condo premium a pasos de la playa con amenidades estilo resort, acabados cálidos y espacios cómodos para estancias largas.',
         image: {
           src: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-          alt: 'Condominio premium cerca de la playa en Playa del Carmen',
+          alt: 'Condominio premium cerca de la playa en Mérida, Yucatán',
         },
         price: 'Desde $190 USD por noche',
         rating: 4.8,
         href: '#contact',
+        amenities: ['Amenidades tipo resort', 'Acceso rápido a playa', 'Wifi', 'Estancia larga'],
+        externalLink: {
+          label: 'Ver en Airbnb',
+          href: 'https://www.airbnb.com/s/Merida--Yucatan--Mexico/homes?query=Selva%20Suite',
+        },
       },
       {
         id: 'casa-palma',
         name: 'Casa Palma',
-        location: 'Playacar Phase II, Playa del Carmen',
+        location: 'Playacar Phase II, Mérida, Yucatán',
         description:
           'Villa privada con vida interior-exterior, jardín tropical y layout ideal para grupos que buscan una base premium en Riviera Maya.',
         image: {
           src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-          alt: 'Villa privada con jardín tropical en Playa del Carmen',
+          alt: 'Villa privada con jardín tropical en Mérida, Yucatán',
         },
         price: 'Desde $340 USD por noche',
         rating: 4.9,
         href: '#contact',
+        amenities: ['Jardín tropical', 'Espacios amplios', 'Privacidad', 'Concierge'],
+        externalLink: {
+          label: 'Ver en Airbnb',
+          href: 'https://www.airbnb.com/s/Merida--Yucatan--Mexico/homes?query=Casa%20Palma',
+        },
       },
       {
         id: 'azul-studio',
         name: 'Azul Studio',
-        location: 'Centro, Playa del Carmen',
+        location: 'Centro, Mérida, Yucatán',
         description:
           'Estancia boutique compacta para escapadas de playa, cerca de cafés, coworking y el ritmo del centro, sin perder calma ni confort.',
         image: {
           src: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80',
-          alt: 'Estudio boutique en el centro de Playa del Carmen',
+          alt: 'Estudio boutique en el centro de Mérida, Yucatán',
         },
         price: 'Desde $118 USD por noche',
         rating: 4.7,
         href: '#contact',
+        amenities: ['Ubicación céntrica', 'Smart check-in', 'Wifi', 'Kitchenette'],
+        externalLink: {
+          label: 'Ver en Airbnb',
+          href: 'https://www.airbnb.com/s/Merida--Yucatan--Mexico/homes?query=Azul%20Studio',
+        },
       },
       {
         id: 'oceana-penthouse',
         name: 'Oceana Penthouse',
-        location: 'Mamitas Beach, Playa del Carmen',
+        location: 'Mamitas Beach, Mérida, Yucatán',
         description:
           'Penthouse con rooftop privado, brisa del mar y acabados premium, ideal para viajes especiales o itinerarios largos en Riviera Maya.',
         image: {
           src: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
-          alt: 'Penthouse vacacional cerca de Mamitas Beach en Playa del Carmen',
+          alt: 'Penthouse vacacional cerca de Mamitas Beach en Mérida, Yucatán',
         },
         price: 'Desde $410 USD por noche',
         rating: 5,
         href: '#contact',
+        amenities: ['Rooftop privado', 'Vista premium', 'Espacios amplios', 'Soporte 24/7'],
+        externalLink: {
+          label: 'Ver en Airbnb',
+          href: 'https://www.airbnb.com/s/Merida--Yucatan--Mexico/homes?query=Oceana%20Penthouse',
+        },
       },
     ],
   },
@@ -188,7 +218,7 @@ export const homepageSeed: HomepageContent = {
         id: 'prime-locations',
         icon: 'map-pin',
         title: 'Ubicaciones premium',
-        description: 'Hospédate cerca de la playa, la Quinta Avenida, beach clubs y puntos clave de Playa del Carmen.',
+        description: 'Hospédate cerca de la playa, la Quinta Avenida, beach clubs y puntos clave de Mérida, Yucatán.',
       },
       {
         id: 'guest-care',
@@ -209,7 +239,7 @@ export const homepageSeed: HomepageContent = {
       eyebrow: 'Más allá del hospedaje',
       title: 'Experiencias, tours y planes locales en toda Riviera Maya',
       description:
-        'Desde beach clubs y cenotes hasta bienestar, gastronomía y planes familiares, ayudamos a vivir la mejor versión de Playa del Carmen.',
+        'Desde beach clubs y cenotes hasta bienestar, gastronomía y planes familiares, ayudamos a vivir la mejor versión de Mérida, Yucatán.',
     },
     cta: {
       label: 'Solicitar ayuda de concierge',
@@ -222,7 +252,7 @@ export const homepageSeed: HomepageContent = {
         description: 'Reserva días frente al mar con opciones ideales para parejas, grupos o itinerarios familiares.',
         image: {
           src: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80',
-          alt: 'Experiencia de beach club en Playa del Carmen',
+          alt: 'Experiencia de beach club en Mérida, Yucatán',
         },
         href: '#contact',
       },
@@ -232,7 +262,7 @@ export const homepageSeed: HomepageContent = {
         description: 'Planea escapadas naturales, rutas guiadas y day trips por Riviera Maya sin coordinar múltiples proveedores.',
         image: {
           src: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80',
-          alt: 'Tour de cenotes y aventura cerca de Playa del Carmen',
+          alt: 'Tour de cenotes y aventura cerca de Mérida, Yucatán',
         },
         href: '#contact',
       },
@@ -242,7 +272,7 @@ export const homepageSeed: HomepageContent = {
         description: 'Descubre restaurantes con atmósfera cálida, cocina mexicana elevada y favoritos locales cerca de tu estancia.',
         image: {
           src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=900&q=80',
-          alt: 'Experiencia gastronómica cerca de una renta vacacional en Playa del Carmen',
+          alt: 'Experiencia gastronómica cerca de una renta vacacional en Mérida, Yucatán',
         },
         href: '#contact',
       },
@@ -264,7 +294,7 @@ export const homepageSeed: HomepageContent = {
       imageGrid: [
         {
           src: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=600&q=80',
-          alt: 'Vista al mar cerca de Playa del Carmen',
+          alt: 'Vista al mar cerca de Mérida, Yucatán',
         },
         {
           src: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=600&q=80',
@@ -299,7 +329,7 @@ export const homepageSeed: HomepageContent = {
     phonePrimaryHref: 'https://wa.me/529842184021',
     phoneSecondaryHref: 'https://wa.me/529841538804',
     email: 'stay@lobbypm.com',
-    address: 'Playa del Carmen, Quintana Roo, México',
+    address: 'Mérida, Yucatán, México',
   },
   testimonials: {
     heading: {
@@ -325,7 +355,7 @@ export const homepageSeed: HomepageContent = {
         id: 'laura',
         name: 'Laura Rivera',
         location: 'Monterrey, México',
-        text: 'Reservamos para un viaje familiar y todo estaba listo al llegar. Las recomendaciones en Playa del Carmen nos ahorraron horas de planeación.',
+        text: 'Reservamos para un viaje familiar y todo estaba listo al llegar. Las recomendaciones en Mérida, Yucatán nos ahorraron horas de planeación.',
       },
     ],
   },
@@ -339,7 +369,7 @@ export const homepageSeed: HomepageContent = {
     images: [
       {
         src: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80',
-        alt: 'Recámara premium en una renta vacacional de Playa del Carmen',
+        alt: 'Recámara premium en una renta vacacional de Mérida, Yucatán',
       },
       {
         src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80',
@@ -364,7 +394,7 @@ export const homepageSeed: HomepageContent = {
     ],
   },
   finalCta: {
-    title: '¿Listo para planear tu estancia en Playa del Carmen?',
+    title: '¿Listo para planear tu estancia en Mérida, Yucatán?',
     text: 'Reserva una propiedad boutique, recibe recomendaciones locales o deja que nuestro equipo te ayude a construir un mejor itinerario en Riviera Maya.',
     button: {
       label: 'Contactar a Lobby PM',
@@ -372,7 +402,7 @@ export const homepageSeed: HomepageContent = {
     },
     image: {
       src: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80',
-      alt: 'Playa al atardecer cerca de Playa del Carmen',
+      alt: 'Playa al atardecer cerca de Mérida, Yucatán',
     },
   },
 };

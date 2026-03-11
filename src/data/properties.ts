@@ -3,9 +3,9 @@ import type { ManagedProperty } from '../types/properties';
 export const propertiesSeed: ManagedProperty[] = [
   {
     id: 'coral-loft',
-    slug: 'coral-loft-playa-del-carmen',
+    slug: 'coral-loft-merida-yucatan',
     name: 'Coral Loft',
-    location: 'Gonzalo Guerrero, Playa del Carmen',
+    location: 'Gonzalo Guerrero, Mérida, Yucatán',
     shortDescription: 'Loft boutique cerca de la Quinta Avenida, ideal para parejas y estancias cortas premium.',
     nightlyRateFrom: 145,
     currency: 'USD',
@@ -15,7 +15,7 @@ export const propertiesSeed: ManagedProperty[] = [
     status: 'published',
     coverImage: {
       src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
-      alt: 'Loft boutique cerca de la Quinta Avenida en Playa del Carmen',
+      alt: 'Loft boutique cerca de la Quinta Avenida en Mérida, Yucatán',
     },
     gallery: [
       {
@@ -33,7 +33,7 @@ export const propertiesSeed: ManagedProperty[] = [
     id: 'marea-residence',
     slug: 'marea-residence-playacar',
     name: 'Marea Residence',
-    location: 'Playacar, Playa del Carmen',
+    location: 'Playacar, Mérida, Yucatán',
     shortDescription: 'Residencia familiar con plunge pool y acceso rápido a beach clubs, golf y traslados.',
     nightlyRateFrom: 280,
     currency: 'USD',

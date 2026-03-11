@@ -52,7 +52,9 @@ export function AboutSection({ content }: AboutSectionProps) {
           </div>
 
           <div className="mt-8">
-            <ButtonLink href={content.cta.href}>{content.cta.label}</ButtonLink>
+            <ButtonLink href={content.cta.href} width="fit">
+              {content.cta.label}
+            </ButtonLink>
           </div>
         </Reveal>
       </div>

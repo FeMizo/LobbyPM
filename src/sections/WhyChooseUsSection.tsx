@@ -21,7 +21,9 @@ export function WhyChooseUsSection({ content }: WhyChooseUsSectionProps) {
     <SectionShell id="why-us" className="bg-white">
       <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <SectionIntro heading={content.heading} />
-        <ButtonLink href={content.cta.href}>{content.cta.label}</ButtonLink>
+        <ButtonLink href={content.cta.href} width="fit">
+          {content.cta.label}
+        </ButtonLink>
       </div>
 
       <div className="mt-14 grid gap-8 md:grid-cols-2 xl:grid-cols-4">

@@ -49,7 +49,7 @@ export function ExperiencesSection({ content }: ExperiencesSectionProps) {
     <SectionShell id="experiences" className="bg-warm-sand/25">
       <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <SectionIntro heading={content.heading} />
-        <ButtonLink href={content.cta.href} variant="outline" className="w-fit">
+        <ButtonLink href={content.cta.href} variant="outline" width="fit">
           {content.cta.label}
         </ButtonLink>
       </div>
@@ -66,7 +66,9 @@ export function ExperiencesSection({ content }: ExperiencesSectionProps) {
           <h3 className="mt-5 text-4xl font-bold leading-tight text-warm-text">{content.concierge.title}</h3>
           <p className="mt-5 text-base leading-8 text-warm-muted">{content.concierge.description}</p>
           <div className="mt-8">
-            <ButtonLink href={content.concierge.cta.href}>{content.concierge.cta.label}</ButtonLink>
+            <ButtonLink href={content.concierge.cta.href} width="fit">
+              {content.concierge.cta.label}
+            </ButtonLink>
           </div>
         </div>
 

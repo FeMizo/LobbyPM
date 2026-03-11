@@ -1,4 +1,5 @@
 import { AdminLayout } from './AdminLayout';
+import { PropertyImage } from '../components/ui/PropertyImage';
 import { propertiesRepository } from '../lib/repositories/propertiesRepository';
 
 export function AdminPropertiesPage() {
@@ -33,13 +34,13 @@ export function AdminPropertiesPage() {
         {properties.map((property) => (
           <article key={property.id} className="admin-card overflow-hidden">
             <div className="grid gap-0 md:grid-cols-[220px_minmax(0,1fr)]">
-              <img
-                src={property.coverImage.src}
-                alt={property.coverImage.alt}
-                className="h-full min-h-56 w-full object-cover"
-                loading="lazy"
-                decoding="async"
-                referrerPolicy="no-referrer"
+              <PropertyImage
+                image={property.coverImage}
+                size="free"
+                hover="soft"
+                className="h-full min-h-56"
+                imageClassName="h-full"
+                sizes="(max-width: 768px) 100vw, 220px"
               />
               <div className="p-7">
                 <div className="flex items-center justify-between gap-4">

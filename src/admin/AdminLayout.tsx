@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { ButtonLink } from '../components/ui/ButtonLink';
 import { Seo } from '../lib/seo';
 
 interface AdminLayoutProps {
@@ -29,12 +30,12 @@ export function AdminLayout({ children, title, description }: AdminLayoutProps) 
             <p className="mt-1 text-sm text-warm-muted">Base administrativa de contenido y operación</p>
           </div>
           <div className="flex gap-3">
-            <a href="/admin" className="btn-outline px-5 py-2 text-xs">
+            <ButtonLink href="/admin" variant="outline" width="fit" className="px-5 py-2 text-xs">
               Panel
-            </a>
-            <a href="/" className="btn-primary px-5 py-2 text-xs">
+            </ButtonLink>
+            <ButtonLink href="/" width="fit" className="px-5 py-2 text-xs">
               Ver sitio
-            </a>
+            </ButtonLink>
           </div>
         </header>
         {children}
