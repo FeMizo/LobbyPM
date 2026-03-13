@@ -11,8 +11,10 @@ interface PropertyCreateFormProps {
   mode: 'create' | 'edit';
   initialValues?: PropertyFormValues;
   propertyId?: string;
-  onSubmit: (input: CreateManagedPropertyInput) => void;
+  onSubmit: (input: CreateManagedPropertyInput) => Promise<void>;
   onCancel: () => void;
+  isSubmitting?: boolean;
+  submitError?: string | null;
 }
 
 interface FieldProps {
@@ -35,6 +37,8 @@ export function PropertyCreateForm({
   propertyId,
   onSubmit,
   onCancel,
+  isSubmitting = false,
+  submitError = null,
 }: PropertyCreateFormProps) {
   const [values, setValues] = useState<PropertyFormValues>(
     initialValues ? { ...initialValues } : getInitialPropertyFormValues(),
@@ -50,7 +54,7 @@ export function PropertyCreateForm({
     setValues((current) => ({ ...current, [key]: value }));
   };
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!values.name.trim() || !values.location.trim() || !values.shortDescription.trim()) {
@@ -69,7 +73,7 @@ export function PropertyCreateForm({
     }
 
     setError(null);
-    onSubmit(toCreateManagedPropertyInput(values));
+    await onSubmit(toCreateManagedPropertyInput(values));
   }
 
   const title = mode === 'edit' ? 'Editar propiedad' : 'Nueva propiedad';
@@ -93,7 +97,8 @@ export function PropertyCreateForm({
         <button
           type="button"
           onClick={onCancel}
-          className="inline-flex rounded-full border-2 border-primary px-5 py-2 text-xs font-bold uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary hover:text-white"
+          disabled={isSubmitting}
+          className="inline-flex rounded-full border-2 border-primary px-5 py-2 text-xs font-bold uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
         >
           Cerrar
         </button>
@@ -297,17 +302,23 @@ export function PropertyCreateForm({
           <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>
         )}
 
+        {submitError && (
+          <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p>
+        )}
+
         <div className="flex flex-wrap gap-3 border-t border-warm-sand pt-3">
           <button
             type="submit"
-            className="inline-flex rounded-full bg-primary px-6 py-3 text-xs font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#c46648]"
+            disabled={isSubmitting}
+            className="inline-flex rounded-full bg-primary px-6 py-3 text-xs font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#c46648] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {submitLabel}
+            {isSubmitting ? 'Guardando...' : submitLabel}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="inline-flex rounded-full border-2 border-primary px-6 py-3 text-xs font-bold uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary hover:text-white"
+            disabled={isSubmitting}
+            className="inline-flex rounded-full border-2 border-primary px-6 py-3 text-xs font-bold uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
           >
             Cancelar
           </button>

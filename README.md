@@ -1,8 +1,8 @@
 # Lobby PM
 
-Base frontend para homepage y dashboard interno de una marca de rentas vacacionales en Playa del Carmen.
+Base frontend y admin para una marca de rentas vacacionales.
 
-## Cómo correr el proyecto
+## Como correr el proyecto
 
 1. Instala dependencias con `npm install`
 2. Corre el entorno local con `npm run dev`
@@ -10,35 +10,27 @@ Base frontend para homepage y dashboard interno de una marca de rentas vacaciona
 
 ## Rutas principales
 
-- `/` homepage público
+- `/` homepage publico
 - `/admin` panel principal
-- `/admin/home` edición del homepage
-- `/admin/properties` base del módulo de propiedades
+- `/admin/home` edicion del homepage
+- `/admin/properties` base del modulo de propiedades
 
-## Fases ya implementadas
+## Despliegue en Vercel
 
-### Fase 1
+El proyecto ya incluye:
 
-- Refactor de estructura
-- Homepage modular por secciones
-- SEO base del homepage
-- Mejoras visibles de performance
+- Frontend Vite desplegable en Vercel
+- API en `/api/homepage` y `/api/properties`
+- Persistencia remota mediante Vercel Blob
 
-### Fase 2
+Variables requeridas en Vercel:
 
-- Dashboard inicial
-- `/admin/home` con formulario editable
-- Persistencia local simple y escalable
+- `BLOB_READ_WRITE_TOKEN`
+- `BLOB_STORE_ACCESS=private`
+- `ADMIN_API_TOKEN`
 
-### Fase 3
+Notas:
 
-- Tipos y datos centralizados de propiedades
-- Repositorio desacoplado para evolucionar a CRUD
-- Vista admin inicial para inventario
-
-## Qué parte del home ya es editable
-
-- Hero: titular, subtítulo, CTAs, URLs e imagen
-- Propiedades destacadas: título, subtítulo y CTA
-- Experiencias: título, subtítulo y CTA
-- CTA final: título, texto, botón y URL
+- `GET` del contenido es publico para que el sitio cargue sin credenciales.
+- `PUT` requiere `ADMIN_API_TOKEN` si esa variable esta configurada.
+- El token de admin se captura desde `/admin` y se guarda solo en el navegador del editor.

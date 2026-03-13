@@ -2,11 +2,11 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
-import { propertiesFileApiPlugin } from "./server/propertiesFileApiPlugin";
+import { contentFileApiPlugin } from "./server/contentFileApiPlugin";
 
 export default defineConfig({
   base: "/",
-  plugins: [react(), tailwindcss(), propertiesFileApiPlugin()],
+  plugins: [react(), tailwindcss(), contentFileApiPlugin()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "."),

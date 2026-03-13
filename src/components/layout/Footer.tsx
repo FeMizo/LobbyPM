@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import type { ContactContent, SiteSettings } from '../../types/homepage';
 
 interface FooterProps {
@@ -13,6 +14,12 @@ const footerLinks = [
 ];
 
 export function Footer({ contact, site }: FooterProps) {
+  const [currentYear, setCurrentYear] = useState('');
+
+  useEffect(() => {
+    setCurrentYear(String(new Date().getFullYear()));
+  }, []);
+
   return (
     <footer className="bg-warm-text px-6 py-20 text-warm-bg md:px-10 lg:px-16 xl:px-24">
       <div className="mx-auto grid max-w-7xl gap-14 md:grid-cols-2 xl:grid-cols-[1.3fr_0.8fr_0.9fr]">
@@ -73,7 +80,10 @@ export function Footer({ contact, site }: FooterProps) {
       </div>
 
       <div className="mx-auto mt-14 max-w-7xl border-t border-white/10 pt-8 text-sm text-warm-bg/50">
-        <p>{new Date().getFullYear()} Lobby PM. Todos los derechos reservados.</p>
+        <p>
+          {currentYear ? `${currentYear} ` : ''}
+          Lobby PM. Todos los derechos reservados.
+        </p>
       </div>
     </footer>
   );

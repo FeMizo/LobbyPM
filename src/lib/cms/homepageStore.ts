@@ -1,85 +1,89 @@
 import { useSyncExternalStore } from 'react';
 import { homepageSeed } from '../../data/homepage';
 import type { HomepageContent } from '../../types/homepage';
+import { fetchJsonWithAdminAuth } from '../api/adminApi';
 
-const STORAGE_KEY = 'lobbypm.homepage-content.v1';
-const STORE_EVENT = 'lobbypm:homepage-content-updated';
+const API_ENDPOINT = '/api/homepage';
 const defaultSnapshot = structuredClone(homepageSeed);
-
-let cachedRaw = '';
 let cachedSnapshot: HomepageContent = defaultSnapshot;
+const listeners = new Set<() => void>();
+let initialSyncStarted = false;
 
 function cloneSeed() {
   return structuredClone(homepageSeed);
 }
 
-function canUseStorage() {
-  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+function emitUpdate() {
+  listeners.forEach((listener) => listener());
+}
+
+function normalizeHomepageContent(raw: unknown): HomepageContent {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    return cloneSeed();
+  }
+
+  return {
+    ...cloneSeed(),
+    ...(raw as Partial<HomepageContent>),
+  };
+}
+
+function commitSnapshot(snapshot: HomepageContent) {
+  cachedSnapshot = snapshot;
+  emitUpdate();
 }
 
 export function getHomepageContent(): HomepageContent {
-  if (!canUseStorage()) {
-    return defaultSnapshot;
-  }
-
-  const stored = window.localStorage.getItem(STORAGE_KEY);
-  const raw = stored ?? '';
-
-  if (raw === cachedRaw) {
-    return cachedSnapshot;
-  }
-
-  cachedRaw = raw;
-
-  if (!stored) {
-    cachedSnapshot = cloneSeed();
-    return cachedSnapshot;
-  }
-
-  try {
-    cachedSnapshot = {
-      ...cloneSeed(),
-      ...JSON.parse(stored),
-    } as HomepageContent;
-  } catch {
-    cachedSnapshot = cloneSeed();
-  }
-
   return cachedSnapshot;
 }
 
-export function saveHomepageContent(content: HomepageContent) {
-  if (!canUseStorage()) {
-    return;
-  }
+export async function refreshHomepageContent() {
+  try {
+    const response = await fetch(API_ENDPOINT, { method: 'GET' });
+    if (!response.ok) {
+      throw new Error(`Unable to fetch homepage content: ${response.status}`);
+    }
 
-  const raw = JSON.stringify(content);
-  cachedRaw = raw;
-  cachedSnapshot = content;
-  window.localStorage.setItem(STORAGE_KEY, raw);
-  window.dispatchEvent(new Event(STORE_EVENT));
+    const payload = await response.json();
+    const nextSnapshot = normalizeHomepageContent(payload);
+    commitSnapshot(nextSnapshot);
+    return nextSnapshot;
+  } catch (error) {
+    console.warn('Homepage API unavailable, using in-memory snapshot.', error);
+    return cachedSnapshot;
+  }
 }
 
-function subscribe(callback: () => void) {
-  if (typeof window === 'undefined') {
-    return () => undefined;
+export async function saveHomepageContent(content: HomepageContent) {
+  const response = await fetchJsonWithAdminAuth(API_ENDPOINT, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(content),
+  });
+
+  if (!response.ok) {
+    const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+    throw new Error(payload?.error || `Unable to persist homepage content: ${response.status}`);
   }
 
-  const onStorage = (event: StorageEvent) => {
-    if (event.key === STORAGE_KEY) {
-      callback();
-    }
-  };
+  const payload = await response.json();
+  const nextSnapshot = normalizeHomepageContent(payload);
+  commitSnapshot(nextSnapshot);
+  return nextSnapshot;
+}
 
-  window.addEventListener(STORE_EVENT, callback);
-  window.addEventListener('storage', onStorage);
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  if (!initialSyncStarted && typeof window !== 'undefined') {
+    initialSyncStarted = true;
+    void refreshHomepageContent();
+  }
 
   return () => {
-    window.removeEventListener(STORE_EVENT, callback);
-    window.removeEventListener('storage', onStorage);
+    listeners.delete(listener);
   };
 }
 
 export function useHomepageContent() {
-  return useSyncExternalStore(subscribe, getHomepageContent, () => defaultSnapshot);
+  return useSyncExternalStore(subscribe, () => cachedSnapshot, () => defaultSnapshot);
 }

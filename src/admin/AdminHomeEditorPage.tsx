@@ -1,6 +1,7 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { TextAreaField, TextInputField } from '../components/ui/FormControls';
-import { getHomepageContent, saveHomepageContent } from '../lib/cms/homepageStore';
+import { getApiErrorMessage } from '../lib/api/adminApi';
+import { getHomepageContent, refreshHomepageContent, saveHomepageContent, useHomepageContent } from '../lib/cms/homepageStore';
 import type { HomepageContent } from '../types/homepage';
 import { AdminLayout } from './AdminLayout';
 
@@ -60,16 +61,37 @@ function EditorSection({
 }
 
 export function AdminHomeEditorPage() {
+  const homepageContent = useHomepageContent();
   const [draft, setDraft] = useState<HomepageContent>(() => getHomepageContent());
   const [savedAt, setSavedAt] = useState<string | null>(null);
-
-  const savedSnapshot = JSON.stringify(getHomepageContent());
-  const draftSnapshot = JSON.stringify(draft);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const savedSnapshot = useMemo(() => JSON.stringify(homepageContent), [homepageContent]);
+  const draftSnapshot = useMemo(() => JSON.stringify(draft), [draft]);
   const hasChanges = savedSnapshot !== draftSnapshot;
 
-  function handleSave() {
-    saveHomepageContent(draft);
-    setSavedAt(new Date().toLocaleTimeString());
+  useEffect(() => {
+    void refreshHomepageContent();
+  }, []);
+
+  useEffect(() => {
+    if (!hasChanges) {
+      setDraft(homepageContent);
+    }
+  }, [hasChanges, homepageContent]);
+
+  async function handleSave() {
+    setIsSaving(true);
+    setSaveError(null);
+
+    try {
+      await saveHomepageContent(draft);
+      setSavedAt(new Date().toLocaleTimeString());
+    } catch (error) {
+      setSaveError(getApiErrorMessage(error, 'No fue posible guardar el homepage.'));
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
@@ -81,7 +103,7 @@ export function AdminHomeEditorPage() {
         <div className="space-y-6">
           <EditorSection
             title="Hero"
-            description="Sección principal de SEO y conversión. Estos cambios actualizan el homepage al guardar."
+            description="Seccion principal de SEO y conversion. Estos cambios actualizan el homepage al guardar."
           >
             <SectionField
               label="Titular principal"
@@ -89,7 +111,7 @@ export function AdminHomeEditorPage() {
               onChange={(value) => setDraft({ ...draft, hero: { ...draft.hero, headline: value } })}
             />
             <SectionField
-              label="Subtítulo"
+              label="Subtitulo"
               multiline
               value={draft.hero.subheadline}
               onChange={(value) => setDraft({ ...draft, hero: { ...draft.hero, subheadline: value } })}
@@ -148,10 +170,10 @@ export function AdminHomeEditorPage() {
 
           <EditorSection
             title="Propiedades destacadas"
-            description="Contenido de sección para el showcase. Las tarjetas siguen viniendo desde datos centralizados y quedan listas para CRUD."
+            description="Contenido de seccion para el showcase. Las tarjetas siguen viniendo desde datos centralizados y quedan listas para CRUD."
           >
             <SectionField
-              label="Título"
+              label="Titulo"
               value={draft.featuredProperties.heading.title}
               onChange={(value) =>
                 setDraft({
@@ -164,7 +186,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="Subtítulo"
+              label="Subtitulo"
               multiline
               value={draft.featuredProperties.heading.description}
               onChange={(value) =>
@@ -207,10 +229,10 @@ export function AdminHomeEditorPage() {
 
           <EditorSection
             title="Experiencias"
-            description="Título, texto de apoyo y CTA de la sección de experiencias."
+            description="Titulo, texto de apoyo y CTA de la seccion de experiencias."
           >
             <SectionField
-              label="Título"
+              label="Titulo"
               value={draft.experiences.heading.title}
               onChange={(value) =>
                 setDraft({
@@ -223,7 +245,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="Subtítulo"
+              label="Subtitulo"
               multiline
               value={draft.experiences.heading.description}
               onChange={(value) =>
@@ -266,10 +288,10 @@ export function AdminHomeEditorPage() {
 
           <EditorSection
             title="CTA final"
-            description="Bloque de conversión al final de la página para contacto directo o futura reserva."
+            description="Bloque de conversion al final de la pagina para contacto directo o futura reserva."
           >
             <SectionField
-              label="Título"
+              label="Titulo"
               value={draft.finalCta.title}
               onChange={(value) => setDraft({ ...draft, finalCta: { ...draft.finalCta, title: value } })}
             />
@@ -280,7 +302,7 @@ export function AdminHomeEditorPage() {
               onChange={(value) => setDraft({ ...draft, finalCta: { ...draft.finalCta, text: value } })}
             />
             <SectionField
-              label="Texto del botón"
+              label="Texto del boton"
               value={draft.finalCta.button.label}
               onChange={(value) =>
                 setDraft({
@@ -290,7 +312,7 @@ export function AdminHomeEditorPage() {
               }
             />
             <SectionField
-              label="URL del botón"
+              label="URL del boton"
               value={draft.finalCta.button.href}
               onChange={(value) =>
                 setDraft({
@@ -304,42 +326,50 @@ export function AdminHomeEditorPage() {
 
         <aside className="flex h-full flex-col gap-6">
           <section className="admin-card p-7">
-            <h2 className="text-2xl font-bold text-warm-text">Publicación</h2>
+            <h2 className="text-2xl font-bold text-warm-text">Publicacion</h2>
             <p className="leading-7 text-warm-muted">
-              El contenido se guarda localmente mediante un repositorio estilo CMS. Eso deja una interfaz limpia para migrar después a API o SQLite.
+              El contenido ahora se guarda por API y se persiste en Vercel Blob para que el homepage
+              quede compartido entre todos los visitantes y administradores.
             </p>
 
             <div>
               <button
                 type="button"
                 onClick={handleSave}
-                className="inline-flex w-full justify-center rounded-2xl bg-primary px-5 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white hover:bg-[#c46648]"
+                disabled={isSaving}
+                className="inline-flex w-full justify-center rounded-2xl bg-primary px-5 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white hover:bg-[#c46648] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Guardar homepage
+                {isSaving ? 'Guardando...' : 'Guardar homepage'}
               </button>
             </div>
 
+            {saveError && (
+              <div className="rounded-[1.5rem] border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                {saveError}
+              </div>
+            )}
+
             <div className="rounded-[1.5rem] bg-warm-sand/50 p-4 text-sm text-warm-muted">
               <p>Estado: {hasChanges ? 'Cambios sin guardar' : 'Guardado'}</p>
-              <p className="mt-1">Último guardado: {savedAt ?? 'Sin guardar en esta sesión'}</p>
+              <p className="mt-1">Ultimo guardado: {savedAt ?? 'Sin guardar en esta sesion'}</p>
             </div>
           </section>
 
           <section className="admin-card p-7">
             <h2 className="text-2xl font-bold text-warm-text">Editable ahora</h2>
             <ul className="grid gap-3 text-sm leading-7 text-warm-muted">
-              <li>Hero: titular, subtítulo, CTAs, URLs e imagen.</li>
-              <li>Propiedades destacadas: título, subtítulo y CTA.</li>
-              <li>Experiencias: título, subtítulo y CTA.</li>
-              <li>CTA final: título, texto, botón y URL.</li>
+              <li>Hero: titular, subtitulo, CTAs, URLs e imagen.</li>
+              <li>Propiedades destacadas: titulo, subtitulo y CTA.</li>
+              <li>Experiencias: titulo, subtitulo y CTA.</li>
+              <li>CTA final: titulo, texto, boton y URL.</li>
             </ul>
           </section>
 
           <section className="admin-card mt-auto p-7">
-            <h2 className="text-2xl font-bold text-warm-text">Siguientes módulos CMS</h2>
+            <h2 className="text-2xl font-bold text-warm-text">Siguientes modulos CMS</h2>
             <ul className="grid gap-3 text-sm leading-7 text-warm-muted">
-              <li>CRUD de propiedades con amenidades, galerías y estado.</li>
-              <li>Gestión de experiencias y guías locales.</li>
+              <li>CRUD de propiedades con amenidades, galerias y estado.</li>
+              <li>Gestion de experiencias y guias locales.</li>
               <li>Testimonials, blog y settings globales.</li>
               <li>Media manager y adapter de persistencia backend.</li>
             </ul>

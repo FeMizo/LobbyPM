@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import { propertiesSeed } from '../../data/properties';
 import type { CreateManagedPropertyInput, ManagedProperty, PropertyAmenity } from '../../types/properties';
+import { fetchJsonWithAdminAuth } from '../api/adminApi';
 import { buildLegacyPropertySlug, resolvePropertyRoute } from '../routing/propertyUrl';
 
 const API_ENDPOINT = '/api/properties';
@@ -15,8 +16,8 @@ export interface PropertiesRepository {
   listPublished(): ManagedProperty[];
   getById(id: string): ManagedProperty | undefined;
   refresh(): Promise<ManagedProperty[]>;
-  create(input: CreateManagedPropertyInput): ManagedProperty;
-  update(id: string, input: CreateManagedPropertyInput): ManagedProperty | undefined;
+  create(input: CreateManagedPropertyInput): Promise<ManagedProperty>;
+  update(id: string, input: CreateManagedPropertyInput): Promise<ManagedProperty | undefined>;
   subscribe(listener: () => void): () => void;
 }
 
@@ -24,7 +25,7 @@ export const propertiesDataSource = {
   seedFile: 'src/data/properties.ts',
   persistenceFile: 'storage/properties.json',
   apiEndpoint: API_ENDPOINT,
-  mode: 'project-file-via-api',
+  mode: 'vercel-blob-via-api',
   routeTemplate: '/[estado]/[lugar]/[propiedad]',
 } as const;
 
@@ -135,14 +136,15 @@ function commitSnapshot(snapshot: ManagedProperty[]) {
 }
 
 async function persistSnapshotToFile(snapshot: ManagedProperty[]) {
-  const response = await fetch(API_ENDPOINT, {
+  const response = await fetchJsonWithAdminAuth(API_ENDPOINT, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(snapshot),
   });
 
   if (!response.ok) {
-    throw new Error(`Unable to persist properties: ${response.status}`);
+    const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+    throw new Error(payload?.error || `Unable to persist properties: ${response.status}`);
   }
 
   const payload = await response.json();
@@ -226,7 +228,7 @@ class BrowserPropertiesRepository implements PropertiesRepository {
     }
   }
 
-  create(input: CreateManagedPropertyInput) {
+  async create(input: CreateManagedPropertyInput) {
     const snapshot = this.list();
     const existingIds = new Set(snapshot.map((item) => item.id));
     const id = buildPropertyId(input.name, existingIds);
@@ -261,16 +263,12 @@ class BrowserPropertiesRepository implements PropertiesRepository {
     };
 
     const nextSnapshot = [...snapshot, nextItem];
-    commitSnapshot(nextSnapshot);
-
-    void persistSnapshotToFile(nextSnapshot)
-      .then((persistedSnapshot) => commitSnapshot(persistedSnapshot))
-      .catch((error) => console.warn('Unable to persist created property to file.', error));
-
+    const persistedSnapshot = await persistSnapshotToFile(nextSnapshot);
+    commitSnapshot(persistedSnapshot);
     return nextItem;
   }
 
-  update(id: string, input: CreateManagedPropertyInput) {
+  async update(id: string, input: CreateManagedPropertyInput) {
     const snapshot = this.list();
     const propertyIndex = snapshot.findIndex((item) => item.id === id);
 
@@ -310,12 +308,8 @@ class BrowserPropertiesRepository implements PropertiesRepository {
 
     const nextSnapshot = [...snapshot];
     nextSnapshot[propertyIndex] = nextItem;
-    commitSnapshot(nextSnapshot);
-
-    void persistSnapshotToFile(nextSnapshot)
-      .then((persistedSnapshot) => commitSnapshot(persistedSnapshot))
-      .catch((error) => console.warn('Unable to persist edited property to file.', error));
-
+    const persistedSnapshot = await persistSnapshotToFile(nextSnapshot);
+    commitSnapshot(persistedSnapshot);
     return nextItem;
   }
 

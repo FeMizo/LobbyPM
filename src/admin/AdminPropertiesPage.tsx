@@ -1,5 +1,6 @@
 import { PencilLine, PlusCircle } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { getApiErrorMessage } from '../lib/api/adminApi';
 import type { CreateManagedPropertyInput } from '../types/properties';
 import { AdminLayout } from './AdminLayout';
 import { PropertyAdminCard } from './properties/PropertyAdminCard';
@@ -17,6 +18,8 @@ export function AdminPropertiesPage() {
   const properties = useManagedProperties();
   const [editorMode, setEditorMode] = useState<EditorMode>(null);
   const [editingPropertyId, setEditingPropertyId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const counters = useMemo(() => {
     const published = properties.filter((item) => item.status === 'published').length;
@@ -37,27 +40,39 @@ export function AdminPropertiesPage() {
   function openCreateEditor() {
     setEditingPropertyId(null);
     setEditorMode('create');
+    setSubmitError(null);
   }
 
   function openEditEditor(propertyId: string) {
     setEditingPropertyId(propertyId);
     setEditorMode('edit');
+    setSubmitError(null);
   }
 
   function closeEditor() {
     setEditorMode(null);
     setEditingPropertyId(null);
+    setSubmitError(null);
   }
 
-  function handleSubmit(input: CreateManagedPropertyInput) {
-    if (editorMode === 'edit' && editingPropertyId) {
-      propertiesRepository.update(editingPropertyId, input);
-      closeEditor();
-      return;
-    }
+  async function handleSubmit(input: CreateManagedPropertyInput) {
+    setIsSubmitting(true);
+    setSubmitError(null);
 
-    propertiesRepository.create(input);
-    closeEditor();
+    try {
+      if (editorMode === 'edit' && editingPropertyId) {
+        await propertiesRepository.update(editingPropertyId, input);
+        closeEditor();
+        return;
+      }
+
+      await propertiesRepository.create(input);
+      closeEditor();
+    } catch (error) {
+      setSubmitError(getApiErrorMessage(error, 'No fue posible guardar la propiedad.'));
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -102,6 +117,7 @@ export function AdminPropertiesPage() {
             <p>Seed: {propertiesDataSource.seedFile}</p>
             <p>Archivo persistente: {propertiesDataSource.persistenceFile}</p>
             <p>Endpoint: {propertiesDataSource.apiEndpoint}</p>
+            <p>Modo: {propertiesDataSource.mode}</p>
             <p>Ruta SEO futura: {propertiesDataSource.routeTemplate}</p>
           </div>
 
@@ -124,6 +140,8 @@ export function AdminPropertiesPage() {
             initialValues={editingProperty ? toPropertyFormValues(editingProperty) : undefined}
             onSubmit={handleSubmit}
             onCancel={closeEditor}
+            isSubmitting={isSubmitting}
+            submitError={submitError}
           />
         </section>
       )}
