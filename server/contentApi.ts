@@ -8,8 +8,8 @@ import {
   isManagedPropertyArray,
   normalizeHomepageContent,
   normalizePropertiesContent,
-} from './contentSchemas';
-import { isBlobConfigured, readJsonFromBlob, writeJsonToBlob } from './vercelBlobStore';
+} from './contentSchemas.js';
+import { isBlobConfigured, readJsonFromBlob, writeJsonToBlob } from './vercelBlobStore.js';
 
 function jsonHeaders() {
   return {

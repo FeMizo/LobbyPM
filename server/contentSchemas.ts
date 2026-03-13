@@ -1,5 +1,5 @@
-import { homepageSeed } from '../src/data/homepage';
-import { propertiesSeed } from '../src/data/properties';
+import { homepageSeed } from '../src/data/homepage.js';
+import { propertiesSeed } from '../src/data/properties.js';
 import type { HomepageContent } from '../src/types/homepage';
 import type { ManagedProperty } from '../src/types/properties';
 

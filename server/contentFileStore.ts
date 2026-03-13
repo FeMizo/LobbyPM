@@ -7,7 +7,7 @@ import {
   clonePropertiesSeed,
   normalizeHomepageContent,
   normalizePropertiesContent,
-} from './contentSchemas';
+} from './contentSchemas.js';
 
 const STORAGE_DIR = path.resolve(process.cwd(), 'storage');
 const HOMEPAGE_FILE_PATH = path.join(STORAGE_DIR, 'homepage.json');

@@ -8,7 +8,7 @@ import {
   readHomepageContent,
   unauthorizedWriteResponse,
   writeHomepageContent,
-} from '../server/contentApi';
+} from '../server/contentApi.js';
 
 export async function GET() {
   try {

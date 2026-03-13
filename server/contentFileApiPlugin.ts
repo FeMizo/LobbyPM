@@ -2,13 +2,13 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { HomepageContent } from '../src/types/homepage';
 import type { ManagedProperty } from '../src/types/properties';
 import type { Plugin } from 'vite';
-import { isManagedPropertyArray, normalizeHomepageContent } from './contentSchemas';
+import { isManagedPropertyArray, normalizeHomepageContent } from './contentSchemas.js';
 import {
   readHomepageFromFile,
   readPropertiesFromFile,
   writeHomepageToFile,
   writePropertiesToFile,
-} from './contentFileStore';
+} from './contentFileStore.js';
 
 function sendJson(response: ServerResponse, statusCode: number, payload: unknown) {
   response.statusCode = statusCode;

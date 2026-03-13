@@ -8,7 +8,7 @@ import {
   readPropertiesContent,
   unauthorizedWriteResponse,
   writePropertiesContent,
-} from '../server/contentApi';
+} from '../server/contentApi.js';
 
 export async function GET() {
   try {
